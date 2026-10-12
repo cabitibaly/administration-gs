@@ -69,9 +69,9 @@ const Sidebar = () => {
                 >
                     {
                         location.pathname.startsWith("/employes") ?
-                            <IdentificationBadgeIcon size={24} color="#EEEEF0" weight="fill" strokeWidth={0.8} />
+                            <IdentificationBadgeIcon size={24} color="#EEEEF0" weight="fill" />
                         :
-                            <IdentificationBadgeIcon size={24} color="#EEEEF0" strokeWidth={0.8}  />
+                            <IdentificationBadgeIcon size={24} color="#EEEEF0" weight="thin" />
                     }
                 </Navigation>
                 <Navigation 
@@ -82,9 +82,9 @@ const Sidebar = () => {
                 >
                     {
                         location.pathname.startsWith("/vigiles") ?
-                            <ShieldCheckeredIcon color="#EEEEF0" size={24} strokeWidth={0.8} weight="fill" />
+                            <ShieldCheckeredIcon color="#EEEEF0" size={24} weight="fill" />
                         :
-                            <ShieldCheckeredIcon color="#EEEEF0" size={24} strokeWidth={0.8} />
+                            <ShieldCheckeredIcon color="#EEEEF0" size={24} weight="thin" />
                     }
                 </Navigation>
                 <Navigation 
@@ -95,9 +95,9 @@ const Sidebar = () => {
                 >
                     {
                         location.pathname.startsWith("/departements") ?
-                            <NetworkIcon color="#EEEEF0" size={24} strokeWidth={0.8} weight="fill" />
+                            <NetworkIcon color="#EEEEF0" size={24} weight="fill" />
                         :
-                            <NetworkIcon color="#EEEEF0" size={24} strokeWidth={0.8} />
+                            <NetworkIcon color="#EEEEF0" size={24} weight="thin" />
                     }
                 </Navigation>
                 <Navigation 
@@ -108,9 +108,9 @@ const Sidebar = () => {
                 >
                     {
                         location.pathname.startsWith("/entreprises") ?
-                            <BuildingIcon color="#EEEEF0" size={24} strokeWidth={0.8} weight="fill" />
+                            <BuildingIcon color="#EEEEF0" size={24} weight="fill" />
                         :
-                            <BuildingIcon color="#EEEEF0" size={24} strokeWidth={0.8} />
+                            <BuildingIcon color="#EEEEF0" size={24} weight="thin" />
                     }
                 </Navigation>
             </div>

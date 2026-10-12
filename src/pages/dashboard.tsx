@@ -1,5 +1,5 @@
 import { } from 'lucide-react'
-import Sidebar from '../components/navigation/sidebar'
+import Sidebar from '../components/navbar/sidebar'
 import DashboardBody from '../components/dashbord/dashboardBody'
 
 const Dashboard = () => {
