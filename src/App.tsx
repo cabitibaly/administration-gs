@@ -4,6 +4,7 @@ import Dashboard from './pages/dashboard'
 import Visites from './pages/visites'
 import Visiteurs from './pages/visiteurs'
 import Employes from './pages/employes'
+import Vigiles from './pages/vigiles'
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
                 <Route path="/visites" element={<Visites />} />
                 <Route path="/visiteurs" element={<Visiteurs />} />
                 <Route path="/employes" element={<Employes />} />
+                <Route path="/vigiles" element={<Vigiles />} />
             </Routes>
         </>
     )
