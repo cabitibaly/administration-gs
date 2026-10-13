@@ -5,6 +5,7 @@ import Visites from './pages/visites'
 import Visiteurs from './pages/visiteurs'
 import Employes from './pages/employes'
 import Vigiles from './pages/vigiles'
+import Departements from './pages/departements'
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                 <Route path="/visiteurs" element={<Visiteurs />} />
                 <Route path="/employes" element={<Employes />} />
                 <Route path="/vigiles" element={<Vigiles />} />
+                <Route path="/departements" element={<Departements />} />
             </Routes>
         </>
     )
