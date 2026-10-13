@@ -25,7 +25,7 @@ const EmployeBody = () => {
                         onClick={() => setIsOpen(!isOpen)}
                         className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
                     >
-                        Ajoutter
+                        Ajouter
                     </button>
                 </div>
                 <div className="border border-bleu-11 w-full flex-1 relative rounded-3xl overflow-x-auto shrink-0 flex items-center justify-center">                            
