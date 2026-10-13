@@ -3,6 +3,7 @@ import Connexion from './pages/connexion'
 import Dashboard from './pages/dashboard'
 import Visites from './pages/visites'
 import Visiteurs from './pages/visiteurs'
+import Employes from './pages/employes'
 
 const App = () => {
     return (
@@ -12,6 +13,7 @@ const App = () => {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/visites" element={<Visites />} />
                 <Route path="/visiteurs" element={<Visiteurs />} />
+                <Route path="/employes" element={<Employes />} />
             </Routes>
         </>
     )
