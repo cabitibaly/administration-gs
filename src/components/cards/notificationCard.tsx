@@ -7,7 +7,7 @@ interface NotificationCardProps {
 
 const NotificationCard = ({notification}: NotificationCardProps) => {
     return (
-        <div className="relative border-b border-bleu-6/30 p-4 w-full flex items-start justify-center gap-4">
+        <div className="relative border-b border-gris-11 p-4 w-full flex items-start justify-center gap-4">
             <div className={`size-10 aspect-square rounded-full bg-bleu-11 flex items-center justify-center`}>
                 <Mail strokeWidth={1.5} className="size-6 stroke-bleu-9" />
             </div>

@@ -14,11 +14,11 @@ const NotificationModal = ({isOpen, setIsOpen}: Props) => {
     useClickOutside(ref, () => setIsOpen(false), isOpen);
 
     return (
-        <div ref={ref} className="absolute top-20 right-10 z-10 border border-bleu-6/30 overflow-auto w-2/5 h-[85.5vh] bg-bleu-12 rounded-2xl flex flex-col items-start justify-start">
-            <div className="sticky top-0 z-10 bg-bleu-11 border-b border-bleu-6/30 p-4 w-full flex items-center justify-between gap-6">
-                <span className="text-xl text-gris-12 font-medium">Notifications</span>
+        <div ref={ref} className="absolute top-19 right-8 z-10 border border-gris-11 overflow-auto w-2/5 h-[85.5vh] bg-gris-12 rounded-2xl flex flex-col items-start justify-start">
+            <div className="sticky top-0 z-10 border-b border-gris-11 p-4 w-full flex items-center justify-between gap-6">
+                <span className="text-xl text-gris-1 font-medium">Notifications</span>
                 <button onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
-                    <X strokeWidth={1.5} className="size-6 stroke-gris-12"/>
+                    <X strokeWidth={1.5} className="size-6 stroke-gris-1"/>
                 </button>
             </div>    
             <NotificationCard 
