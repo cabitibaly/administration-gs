@@ -3,9 +3,11 @@ import Topbar from "../navbar/topbar"
 import { useState } from "react"
 import { Check } from "lucide-react"
 import EmployeLigne from "../cards/employeLigne"
+import AjouterEmploye from "../modal/ajouterEmploye"
 
 
 const EmployeBody = () => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [recherche, setRecherche] = useState<string>("")
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
 
@@ -19,7 +21,10 @@ const EmployeBody = () => {
                         <label htmlFor="recherche" className="sr-only">Recherche commande</label>
                         <input value={recherche} onChange={(e) => setRecherche(e.target.value)} type="text" className="border border-gris-8/20 bg-gris-11/20 rounded-xl w-80 py-2 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Recherche..." />
                     </div> 
-                    <button className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11">
+                    <button 
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
+                    >
                         Ajoutter
                     </button>
                 </div>
@@ -63,6 +68,13 @@ const EmployeBody = () => {
                     </table>
                 </div>
             </div>
+            {
+                isOpen && 
+                <AjouterEmploye 
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}    
+                />
+            }
         </div>
     )
 }
