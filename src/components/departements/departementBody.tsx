@@ -3,6 +3,7 @@ import Topbar from "../navbar/topbar"
 import { useState } from "react";
 import DepartementLigne from "../cards/DepartementLigne";
 import { Check } from "lucide-react";
+import AjouterDepartement from "../modal/ajouterDepartement";
 
 const DepartementBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -57,7 +58,13 @@ const DepartementBody = () => {
                     </table>
                 </div>
             </div>
-            
+            {
+                isOpen && 
+                <AjouterDepartement 
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}    
+                />
+            }
         </div>
     )
 }
