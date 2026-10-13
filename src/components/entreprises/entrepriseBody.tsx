@@ -3,6 +3,7 @@ import Topbar from "../navbar/topbar"
 import { useState } from "react";
 import { Check } from "lucide-react";
 import EntrepriseLigne from "../cards/EntrepriseLigne";
+import AjouterEntreprise from "../modal/ajouterEntreprise";
 
 const EntrepriseBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -63,13 +64,13 @@ const EntrepriseBody = () => {
                     </table>
                 </div>
             </div>
-            {/* {
+            {
                 isOpen && 
-                <AjouterDepartement 
+                <AjouterEntreprise 
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}    
                 />
-            } */}
+            }
         </div>
     )
 }
