@@ -3,6 +3,7 @@ import Topbar from "../navbar/topbar"
 import { useState } from "react";
 import { Check } from "lucide-react";
 import VigileLigne from "../cards/vigileLigne";
+import AjouterVigile from "../modal/ajouterVigile";
 
 const VigileBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -66,13 +67,13 @@ const VigileBody = () => {
                     </table>
                 </div>
             </div>
-            {/* {
+            {
                 isOpen && 
-                <AjouterEmploye 
+                <AjouterVigile 
                     isOpen={isOpen}
                     setIsOpen={setIsOpen}    
                 />
-            } */}
+            }
         </div>
     )
 }
