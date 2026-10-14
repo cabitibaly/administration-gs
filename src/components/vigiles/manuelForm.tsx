@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DropdownData from "../dropdowns/dropdownData";
+import { convertTimeToDate } from "../../utils/convertTimeToDate";
 
 interface Entreprise {
     id: number;
@@ -22,6 +23,11 @@ const entrerpises: Entreprise[] = [
 const ManualForm = () => {
     const [selected, setSelected] = useState<string>("");
     const [recherche, setRecherche] = useState<string>("");
+    const [heureDebut, setHeureDebut] = useState<string>("");
+    const [heureFin, setHeureFin] = useState<string>("");
+
+    console.log(convertTimeToDate(heureDebut))
+    console.log(convertTimeToDate(heureFin))
 
     return (
         <div className="w-full flex flex-col items-center justify-start gap-6">            
@@ -45,11 +51,23 @@ const ManualForm = () => {
             <div className="w-full flex items-center justify-center gap-6">
                 <div className="w-1/2 flex flex-col items-start justify-start gap-2">
                     <label htmlFor="heure-debut" className="text-lg text-gris-8 font-medium">Heure de début de garde</label>
-                    <input id="heure-debut" type="text" className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Saisir l'heure de début de garde..." />
+                    <input
+                        value={heureDebut} 
+                        onChange={(e) => setHeureDebut(e.target.value)}
+                        id="heure-fin" 
+                        type="time" 
+                        className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Saisir l'heure de fin de garde..." 
+                    />
                 </div>
                 <div className="w-1/2 flex flex-col items-start justify-start gap-2">
                     <label htmlFor="heure-fin" className="text-lg text-gris-8 font-medium">Heure de fin de garde</label>
-                    <input id="heure-fin" type="text" className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Saisir l'heure de fin de garde..." />
+                    <input
+                        value={heureFin} 
+                        onChange={(e) => setHeureFin(e.target.value)}
+                        id="heure-fin" 
+                        type="time" 
+                        className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Saisir l'heure de fin de garde..." 
+                    />
                 </div>
             </div>
             <div className="w-full flex items-center justify-center gap-6">
