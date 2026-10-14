@@ -5,11 +5,13 @@ import DropdownEtat from "../dropdowns/dropdownEtat"
 import { Check } from "lucide-react"
 import VisiteLigne from "../cards/visiteLigne"
 import Datepicker from "../date-picker/datepicker"
+import VisiteDetails from "../modal/visiteDetails"
 
 const VisitesBody = () => {
     const [recherche, setRecherche] = useState<string>("")
     const [etat, setEtat] = useState<string>("")
     const [date, setDate] = useState<Date | undefined>()
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
 
     return (
@@ -76,12 +78,21 @@ const VisitesBody = () => {
                             </tr>
                         </thead>
                         <tbody>                                    
-                            <VisiteLigne />
-                            <VisiteLigne />
+                            <VisiteLigne 
+                                isOpen={isOpen}
+                                setIsOpen={setIsOpen}
+                            />
+                            <VisiteLigne 
+                                isOpen={isOpen}
+                                setIsOpen={setIsOpen}
+                            />
                         </tbody>
                     </table>
                 </div>                
             </div>
+            {
+                isOpen && <VisiteDetails isOpen={isOpen} setIsOpen={setIsOpen} />
+            }
         </div>
     )
 }
