@@ -17,7 +17,7 @@ const VigileBody = () => {
             <div className="px-8 overflow-x-hidden overflow-y-auto h-[85.5vh] w-full flex flex-col items-start justify-start gap-4">
                 <div className="border-t border-gris-6/20 pt-4 w-full shrink-0 flex items-start justify-between space-x-4">
                     <div className="flex justify-center items-center gap-6">
-                        <label htmlFor="recherche" className="sr-only">Recherche commande</label>
+                        <label htmlFor="recherche" className="sr-only">Recherche vigiles</label>
                         <input value={recherche} onChange={(e) => setRecherche(e.target.value)} type="text" className="border border-gris-8/20 bg-gris-11/20 rounded-xl w-80 py-2 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Recherche..." />
                     </div> 
                     <button 
