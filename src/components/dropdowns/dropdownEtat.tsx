@@ -29,7 +29,7 @@ const DropdownEtat = ({setEtat, etat}: Props) => {
     return (
         <div ref={ref} onClick={() => setIsOpen(!isOpen)} className="border border-gris-8/20 bg-gris-11/20 relative py-2 px-3 w-50 rounded-xl flex items-center justify-start">
             <div className="w-full flex items-center justify-between gap-4">
-                <span className="cursor-default text-base text-gris-4 font-normal">{etat === "" ? "Etat visite" : etat}</span>
+                <span className={`cursor-default text-base font-normal ${etat === "" ? "text-gris-10" : "text-gris-1"}`}>{etat === "" ? "Etat visite..." : etat}</span>
                 <div className={`size-6 flex items-center justify-center transition duration-200 ${isOpen ? "rotate-180" : ""}`}>
                     <ChevronDown className="stroke-gris-6 size-6 aspect-square" />
                 </div>
@@ -37,9 +37,9 @@ const DropdownEtat = ({setEtat, etat}: Props) => {
             {    
                 isOpen &&
                 <div className="absolute left-0 overflow-auto z-50 top-full border border-gris-8/20 bg-gris-12 rounded-xl w-full flex-col items-start justify-start">
-                    <button type="button" onClick={() => setEtat(formatEtat("En cours"))} className="cursor-pointer p-2 w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20">En Cours</button>                            
-                    <button type="button" onClick={() => setEtat(formatEtat("En prévision"))} className="cursor-pointer p-2 w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20">En prévision</button>                            
-                    <button type="button" onClick={() => setEtat(formatEtat("Terminé"))} className="cursor-pointer p-2 w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20">Terminé</button>                    
+                    <button type="button" onClick={() => setEtat("En cours")} className="cursor-pointer p-2 w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20">En Cours</button>                            
+                    <button type="button" onClick={() => setEtat("En prévision")} className="cursor-pointer p-2 w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20">En prévision</button>                            
+                    <button type="button" onClick={() => setEtat("Terminée")} className="cursor-pointer p-2 w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20">Terminé</button>                    
                 </div>
             }
         </div>

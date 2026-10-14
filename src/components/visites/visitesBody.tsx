@@ -4,10 +4,12 @@ import { useState } from "react"
 import DropdownEtat from "../dropdowns/dropdownEtat"
 import { Check } from "lucide-react"
 import VisiteLigne from "../cards/visiteLigne"
+import Datepicker from "../date-picker/datepicker"
 
 const VisitesBody = () => {
     const [recherche, setRecherche] = useState<string>("")
     const [etat, setEtat] = useState<string>("")
+    const [date, setDate] = useState<Date | undefined>()
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
 
     return (
@@ -20,10 +22,21 @@ const VisitesBody = () => {
                         <label htmlFor="recherche" className="sr-only">Recherche commande</label>
                         <input value={recherche} onChange={(e) => setRecherche(e.target.value)} type="text" className="border border-gris-8/20 bg-gris-11/20 rounded-xl w-80 py-2 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Recherche..." />
                         <hr  className="h-10 border-r border-gris-6/20 max-[1136px]:hidden" />
-                    </div>
+                    </div>                    
                     <div className="w-auto flex items-center justify-center gap-4 max-[1136px]:hidden">
-                        <DropdownEtat etat={etat} setEtat={setEtat} />                        
-                        <button onClick={() =>{setEtat("")}} className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11">
+                        <DropdownEtat etat={etat} setEtat={setEtat} />
+                        <Datepicker 
+                            date={date}
+                            setDate={setDate}
+                        />                        
+                        <button 
+                            onClick={() =>{
+                                setEtat("")
+                                setDate(undefined)
+                                setRecherche("")
+                            }} 
+                            className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
+                        >
                             Réinitialiser
                         </button>                                                                      
                     </div> 

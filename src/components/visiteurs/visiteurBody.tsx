@@ -3,10 +3,12 @@ import Topbar from "../navbar/topbar"
 import { useState } from "react"
 import { Check } from "lucide-react"
 import VisiteurLigne from "../cards/visiteurLigne"
+import Datepicker from "../date-picker/datepicker"
 
 
 const VisiteurBody = () => {
     const [recherche, setRecherche] = useState<string>("")
+    const [date, setDate] = useState<Date | undefined>()
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
 
     return (
@@ -20,6 +22,21 @@ const VisiteurBody = () => {
                         <input value={recherche} onChange={(e) => setRecherche(e.target.value)} type="text" className="border border-gris-8/20 bg-gris-11/20 rounded-xl w-80 py-2 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Recherche..." />
                         <hr  className="h-10 border-r border-gris-6/20" />
                     </div> 
+                    <div className="w-auto flex items-center justify-center gap-4 max-[1136px]:hidden">                        
+                        <Datepicker 
+                            date={date}
+                            setDate={setDate}
+                        />                        
+                        <button 
+                            onClick={() =>{                                
+                                setDate(undefined)
+                                setRecherche("")
+                            }} 
+                            className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
+                        >
+                            Réinitialiser
+                        </button>                                                                      
+                    </div>
                 </div>
                 <div className="border border-bleu-11 w-full flex-1 relative rounded-3xl overflow-x-auto shrink-0 flex items-center justify-center">                            
                     <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12">
