@@ -1,11 +1,19 @@
 import { Check } from "lucide-react";
 import { useState } from "react";
 
-const VisiteLigne = () => {
+interface VisiteLigneProps {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const VisiteLigne = ({isOpen, setIsOpen}: VisiteLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
-        <tr className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}>
+        <tr
+            onClick={() => setIsOpen(!isOpen)}
+            className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}
+        >
             <td className="w-4 p-4">
                 <div onClick={(e) => {e.stopPropagation();setIsChecked(!isChecked)}} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
                     {isChecked && <Check className={`size-4 stroke-bleu-12`} />}
