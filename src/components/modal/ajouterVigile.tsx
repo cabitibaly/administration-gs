@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 import ManualForm from "../vigiles/manuelForm";
-import ImportForm from "../vigiles/importForm";
+import ImportFile from "../dropzone/importFile";
 
 interface Props {
     isOpen: boolean;
@@ -10,6 +10,7 @@ interface Props {
 
 const AjouterVigile = ({isOpen, setIsOpen}: Props) => {
     const [isManual, setIsManual] = useState<boolean>(true)
+    const [file, setFile] = useState<File[]>([])
 
     return (
         <div onClick={() => setIsOpen(!isOpen)} className="p-4 absolute top-0 left-0 z-30 bg-gris-1/70 w-full h-screen flex items-center justify-end">
@@ -45,7 +46,7 @@ const AjouterVigile = ({isOpen, setIsOpen}: Props) => {
                         isManual && <ManualForm />
                     }
                     {
-                        !isManual && <ImportForm />
+                        !isManual && <ImportFile setFile={setFile} file={file} />
                     }
                 </div>
                 <div className="rounded-b-2xl border-t border-gris-11 p-3 w-full flex items-center justify-between gap-4">
