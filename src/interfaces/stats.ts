@@ -4,8 +4,7 @@ export interface NombreVisiteParJour {
 }
 
 export interface commonType {
-    totalVisite: number;
-    pour?: string;
+    totalVisite: number;    
 }
 
 export interface EmployeLePlusVisite {

@@ -10,6 +10,7 @@ import EmployeLePlusVisiteCard from "../cards/EmployeLePlusVisite"
 const DashboardBody = () => {
     const { 
         nombrevisiteEnCours, 
+        nombreVisiteTerminee,
         totalVisite, 
         nombreVisiteParJour, 
         visitesParEmploye,
@@ -23,20 +24,20 @@ const DashboardBody = () => {
             <div className="px-8 overflow-x-hidden overflow-y-auto h-[85.5vh] w-full flex flex-col items-start justify-start gap-4">
                 <div className="rounded-2xl w-full shrink-0 carousel carousel-horizontal space-x-4">
                     <StatsCard 
-                        intitule="Visite en cours" 
-                        valeur={nombrevisiteEnCours ?? 0}
-                        Icon={ChartBarIcon} 
-                        isLoading={isLoading}
-                    />
-                    <StatsCard 
                         intitule="Nombre de visites" 
                         valeur={totalVisite ?? 0}
                         Icon={AlignBottomIcon} 
                         isLoading={isLoading}
                     />
                     <StatsCard 
-                        intitule="Nombre de visiteurs" 
-                        valeur={7} 
+                        intitule="Visites en cours" 
+                        valeur={nombrevisiteEnCours ?? 0}
+                        Icon={ChartBarIcon} 
+                        isLoading={isLoading}
+                    />
+                    <StatsCard 
+                        intitule="Visites terminées"
+                        valeur={nombreVisiteTerminee ?? 0}
                         Icon={UsersIcon}
                         isLoading={isLoading}
                     />

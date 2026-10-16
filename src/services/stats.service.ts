@@ -16,20 +16,6 @@ export const nombreVisiteParJourRequest = async () => {
     return response
 }
 
-export const nombreVisiteEnCoursRequest = async () => {
-    const response = await authenticatedRequest<ApiResponse<commonType> | null>({
-        url: "/statistique/total-visites-en-cours",
-        method: "GET",
-    })
-
-    if (!response) {
-        console.log("Erreur de récupération du nombre de visites en cours")
-        return null
-    }
-
-    return response
-}
-
 export const visitesParEmployeRequest = async () => {
     const response = await authenticatedRequest<ApiResponse<EmployeLePlusVisite[]>>({
         url: "/statistique/visites-par-employe-sur-7-jours",
@@ -44,10 +30,14 @@ export const visitesParEmployeRequest = async () => {
     return response
 }
 
-export const totalVisiteRequest = async () => {
+export const totalVisiteRequest = async (etat?: string) => {
     const response = await authenticatedRequest<ApiResponse<commonType>>({
-        url: "/statistique/total-visites?today=true",
+        url: `/statistique/total-visites`,
         method: "GET",
+        params: {
+            today: true,
+            etat
+        }
     })
 
     if (!response) {

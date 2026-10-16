@@ -1,12 +1,18 @@
 import { useQuery } from "@tanstack/react-query"
-import { departementLePlusVisiteRequest, nombreVisiteEnCoursRequest, nombreVisiteParJourRequest, totalVisiteRequest, visitesParEmployeRequest } from "../../services/stats.service"
+import { departementLePlusVisiteRequest, nombreVisiteParJourRequest, totalVisiteRequest, visitesParEmployeRequest } from "../../services/stats.service"
 import type { ApiResponse } from "../../interfaces/apiResponse"
 import type { commonType, DepartementsLePlusVisites, EmployeLePlusVisite, NombreVisiteParJour } from "../../interfaces/stats"
 
 export const useFetchStats = () => {
     const nombreVisiteEnCours = useQuery<ApiResponse<commonType> | null>({
         queryKey: ['nombreVisiteEnCours'],
-        queryFn: async () => await nombreVisiteEnCoursRequest(),
+        queryFn: async () => await totalVisiteRequest("EN_COURS"),
+        staleTime: 5 * 60 * 1000,
+    })
+
+    const nombreVisiteTerminee = useQuery<ApiResponse<commonType> | null>({
+        queryKey: ['nombreVisiteTerminee'],
+        queryFn: async () => await totalVisiteRequest("TERMINEE"),
         staleTime: 5 * 60 * 1000,
     })
 
@@ -35,6 +41,7 @@ export const useFetchStats = () => {
     })
 
     const isLoading = nombreVisiteEnCours.isLoading || 
+        nombreVisiteTerminee.isLoading ||
         totalVisite.isLoading || 
         nombreVisiteParJour.isLoading || 
         visitesParEmploye.isLoading ||
@@ -43,6 +50,7 @@ export const useFetchStats = () => {
     const refetch = async () => { 
         await Promise.all([
             nombreVisiteEnCours.refetch(), 
+            nombreVisiteTerminee.refetch(),
             totalVisite.refetch(), 
             nombreVisiteParJour.refetch(), 
             visitesParEmploye.refetch(),
@@ -54,6 +62,7 @@ export const useFetchStats = () => {
 
     return {
         nombrevisiteEnCours: nombreVisiteEnCours.data?.data.totalVisite,
+        nombreVisiteTerminee: nombreVisiteTerminee.data?.data.totalVisite,
         totalVisite: totalVisite.data?.data.totalVisite,
         nombreVisiteParJour: nombreVisiteParJour.data?.data,
         visitesParEmploye: visitesParEmploye.data?.data,
