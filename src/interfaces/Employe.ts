@@ -5,5 +5,6 @@ export interface Employe {
     email: string
     telephone: string
     matricule: string
-    departement: string
+    departement: string,
+    dateCreation: string
 }
