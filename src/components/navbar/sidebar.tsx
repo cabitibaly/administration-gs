@@ -10,9 +10,12 @@ import { VisiteActiveIcon } from "../../assets/svg/visteActiveIcon"
 import { VisiteurActiveIcon } from "../../assets/svg/visiteurActiveIcon"
 import { VisiteurIcon } from "../../assets/svg/visiteurIcon"
 import { IdentificationBadgeIcon, ShieldCheckeredIcon, NetworkIcon, BuildingIcon } from "@phosphor-icons/react"
+import { useAuth } from "../../hooks/auth/useAuth"
+import { MoonLoader } from "react-spinners"
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true)
+    const { logout, isLoggingOut } = useAuth();
     const location = useLocation()
 
     return (
@@ -115,15 +118,24 @@ const Sidebar = () => {
                 </Navigation>
             </div>
 
-            <div className="absolute left-5 bottom-4 flex flex-col items-start justify-start">
-                <Navigation 
-                    isOpen={isOpen}
-                    pathname="Déconnexion"
-                    href={"/deconnexion"}                    
-                    isLogoutBtn={true}
-                >
-                    <LogOutIcon strokeWidth={1} className="size-6 aspect-square" />
-                </Navigation>
+            <div 
+                onClick={() => logout()}
+                className={`absolute left-5 bottom-4 flex flex-col ${isLoggingOut ? "items-center justify-center p-3 bg-rouge rounded-2xl" : "items-start justify-start"}`}
+            >                
+                {
+                    isLoggingOut ? (
+                        <MoonLoader color="#EEEEF0" size={24} />
+                    ) : (
+                        <Navigation 
+                            isOpen={isOpen}
+                            pathname="Déconnexion"
+                            href={"/deconnexion"}                    
+                            isLogoutBtn={true}
+                        >
+                            <LogOutIcon strokeWidth={1} className="size-6 aspect-square" />
+                        </Navigation>
+                    )
+                }
             </div>                        
         </div>
     )
