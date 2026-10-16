@@ -3,10 +3,20 @@ import StatsCard from "../cards/statsCard"
 import Topbar from "../navbar/topbar"
 import NombreVisiteCard from "../cards/nombreVisiteCard"
 import VisiteEnCoursCard from "../cards/visiteEnCoursCard"
-import EmployeLePlusVisite from "../cards/EmployeLePlusVisite"
-import DepartementLePlusVisite from "../cards/DepartementLePlusVisite copy"
+import DepartementsLePlusVisitesCard from "../cards/DepartementsLePlusVisites"
+import { useFetchStats } from "../../hooks/stats/useFetchStats"
+import EmployeLePlusVisiteCard from "../cards/EmployeLePlusVisite"
 
 const DashboardBody = () => {
+    const { 
+        nombrevisiteEnCours, 
+        totalVisite, 
+        nombreVisiteParJour, 
+        visitesParEmploye,
+        departementLePlusVisite, 
+        isLoading 
+    } = useFetchStats()
+
     return (
         <div className="w-full flex flex-col items-start justify-start gap-4">
             <Topbar pathname="Tableau de bord" />
@@ -14,27 +24,33 @@ const DashboardBody = () => {
                 <div className="rounded-2xl w-full shrink-0 carousel carousel-horizontal space-x-4">
                     <StatsCard 
                         intitule="Visite en cours" 
-                        valeur={4}
+                        valeur={nombrevisiteEnCours ?? 0}
                         Icon={ChartBarIcon} 
+                        isLoading={isLoading}
                     />
                     <StatsCard 
                         intitule="Nombre de visites" 
-                        valeur={13} 
+                        valeur={totalVisite ?? 0}
                         Icon={AlignBottomIcon} 
+                        isLoading={isLoading}
                     />
                     <StatsCard 
                         intitule="Nombre de visiteurs" 
                         valeur={7} 
                         Icon={UsersIcon}
+                        isLoading={isLoading}
                     />
                 </div>
                 <div className="rounded-2xl w-full shrink-0 flex items-start justify-start gap-4">
-                    <NombreVisiteCard  />  
+                    <NombreVisiteCard 
+                        nombreVisiteParJour={nombreVisiteParJour!} 
+                        isLoading={isLoading}
+                    />  
                     <VisiteEnCoursCard />
                 </div>
                 <div className="rounded-2xl w-full shrink-0 flex items-start justify-start gap-4">
-                    <EmployeLePlusVisite  />  
-                    <DepartementLePlusVisite />
+                    <EmployeLePlusVisiteCard employes={visitesParEmploye!} />  
+                    <DepartementsLePlusVisitesCard departements={departementLePlusVisite!} />
                 </div>
             </div>
         </div>
