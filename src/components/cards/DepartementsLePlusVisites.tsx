@@ -1,6 +1,11 @@
-import { IdentificationBadgeIcon, NetworkIcon } from "@phosphor-icons/react"
+import { NetworkIcon } from "@phosphor-icons/react"
+import type { DepartementsLePlusVisites } from "../../interfaces/stats";
 
-const DepartementLePlusVisite = () => {
+interface DepartementLePlusVisiteProps {
+    departements: DepartementsLePlusVisites[];
+}
+
+const DepartementsLePlusVisitesCard = ({departements}: DepartementLePlusVisiteProps) => {
     return (
         <div className="relative p-2.5 bg-bleu-12 rounded-2xl w-1/2 h-90 flex flex-col items-start justify-start gap-3">
             <div className="flex items-center justify-center gap-2">
@@ -25,17 +30,21 @@ const DepartementLePlusVisite = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="border-t border-bleu-11">
-                            <th scope="row" className="px-6 py-4 text-gris-1 font-normal">
-                                1
-                            </th>
-                            <td className="px-6 py-4 text-gris-1 font-normal">
-                                Marketing
-                            </td>
-                            <td className="px-6 py-4 text-gris-1 font-normal">                                
-                                9
-                            </td>
-                        </tr>                                                       
+                        {
+                            departements?.map((departement, index) => (
+                                <tr key={departement.departement} className="border-t border-bleu-11">
+                                    <th scope="row" className="px-6 py-4 text-gris-1 font-normal">
+                                        {index + 1}
+                                    </th>
+                                    <td className="px-6 py-4 text-gris-1 font-normal">
+                                        {departement.departement}
+                                    </td>
+                                    <td className="px-6 py-4 text-gris-1 font-normal">                                
+                                        {departement.total}
+                                    </td>
+                                </tr>                                                       
+                            ))
+                        }                                                                               
                     </tbody>
                 </table>
             </div>
@@ -43,4 +52,4 @@ const DepartementLePlusVisite = () => {
     )
 }
 
-export default DepartementLePlusVisite
+export default DepartementsLePlusVisitesCard

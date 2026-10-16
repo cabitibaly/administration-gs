@@ -3,11 +3,24 @@
 import { Chart } from "chart.js/auto"
 import { Line } from "react-chartjs-2"
 import { CalendarBlankIcon } from "@phosphor-icons/react"
+import type { NombreVisiteParJour } from "../../interfaces/stats"
 
-const labels = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
-const datasets = [3, 10, 5, 2, 11, 0, 0]
+// const labels = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]
+// const datasets = [3, 10, 5, 2, 11, 0, 0]
 
-const NombreVisiteCard = () => {
+const formatDate = (date: string) => {
+    return new Date(date).toLocaleString('fr-FR', { day: 'numeric', weekday: 'short' })
+}
+
+interface NombreVisiteCardProps {
+    isLoading: boolean;
+    nombreVisiteParJour: NombreVisiteParJour[];
+}
+
+const NombreVisiteCard = ({isLoading, nombreVisiteParJour}: NombreVisiteCardProps) => {
+    const labels = nombreVisiteParJour?.map(visit => formatDate(visit.jour))
+    const datasets = nombreVisiteParJour?.map(visit => visit.nbVisites)    
+
     return (
         <div className="relative p-2.5 overflow-hidden bg-bleu-12 rounded-2xl w-1/2 h-90 flex flex-col items-start justify-start gap-3">
             <div className="flex items-center justify-center gap-2">
@@ -47,7 +60,7 @@ const NombreVisiteCard = () => {
                                 ticks: {
                                     color: "#1E1F24",
                                     font: {
-                                        size: 14
+                                        size: 10
                                     }
                                 },
 
@@ -62,7 +75,7 @@ const NombreVisiteCard = () => {
                                 ticks: {
                                     color: "#1E1F24",
                                     font: {
-                                        size: 14
+                                        size: 10
                                     }
                                 }
                             }
