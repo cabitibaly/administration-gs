@@ -25,7 +25,7 @@ const ImportFile = ({setFile, file}: ImportFormProps) => {
     const octetToKiloBytes = (octets: number) => {
         if (!octets) return 0
         return Math.round((octets / 1024) * 100) / 100
-    }
+    }    
 
     return (
         <div className="w-full flex flex-col items-center justify-center gap-4">
