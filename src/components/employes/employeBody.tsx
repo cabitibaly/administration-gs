@@ -16,7 +16,7 @@ const EmployeBody = () => {
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
     const [date, setDate] = useState<Date | undefined>()
     const debouncedSearch = useDebounce(recherche, 500)
-    const { employes, handleLoadMore, hasNextPage } = useFetchEmployes(debouncedSearch.trim() || "", date?.toISOString())
+    const { employes, handleLoadMore, hasNextPage, refetch } = useFetchEmployes(debouncedSearch.trim() || "", date?.toISOString())
     const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
     return (
@@ -106,7 +106,8 @@ const EmployeBody = () => {
                 isOpen && 
                 <AjouterEmploye 
                     isOpen={isOpen}
-                    setIsOpen={setIsOpen}    
+                    setIsOpen={setIsOpen} 
+                    refetch={refetch}   
                 />
             }
         </div>
