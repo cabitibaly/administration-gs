@@ -1,6 +1,9 @@
 import { TimerIcon } from "lucide-react"
+import { useFetchVisites } from "../../hooks/visites/useFetchVisites"
 
 const VisiteEnCoursCard = () => {
+    const { visites } = useFetchVisites(new Date().toISOString(), "EN_COURS")
+
     return (
         <div className="relative p-2.5 bg-bleu-12 rounded-2xl w-1/2 h-90 flex flex-col items-start justify-start gap-3">
             <div className="flex items-center justify-center gap-2">
@@ -13,29 +16,33 @@ const VisiteEnCoursCard = () => {
                 <table className="rounded-2xl w-full text-base text-left">
                     <thead className="rounded-2xl text-base text-bleu-9 uppercase">
                         <tr className="">
-                            <th scope="col" className="px-6 py-3 font-bold">
-                                Nom et prénom
+                            <th scope="col" className="px-3 py-3 font-bold">
+                                Visiteur
                             </th>
-                            <th scope="col" className="px-6 py-3 font-bold">
-                                Téléphone
+                            <th scope="col" className="px-3 py-3 font-bold">
+                                Hôte
                             </th>
-                            <th scope="col" className="px-6 py-3 font-bold">
+                            <th scope="col" className="px-3 py-3 font-bold">
                                 Heure d'arrivée
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="border-t border-bleu-11">
-                            <th scope="row" className="px-6 py-4 text-gris-1 font-normal">
-                                Aoteru Misumi
-                            </th>
-                            <td className="px-6 py-4 text-gris-1 font-normal">
-                                12345678
-                            </td>
-                            <td className="px-6 py-4 text-gris-1 font-normal">                                
-                                {new Date().toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"})}                                
-                            </td>
-                        </tr>                                                       
+                        {
+                            visites?.map((visite) => (
+                                <tr key={visite.id} className="border-t border-bleu-11">
+                                    <th scope="row" className="px-3 py-4 text-gris-1 font-normal">
+                                        {visite.visiteurInfo}
+                                    </th>
+                                    <td className="px-3 py-4 text-gris-1 font-normal">
+                                        {visite.employeHoteInfo}
+                                    </td>
+                                    <td className="px-3 py-4 text-gris-1 font-normal">                                
+                                        {new Date(visite.heureArrivee).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                                    </td>
+                                </tr>                                                       
+                            ))
+                        }                        
                     </tbody>
                 </table>
             </div>

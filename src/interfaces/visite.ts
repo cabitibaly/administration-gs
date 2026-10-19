@@ -1,6 +1,6 @@
-import { Employe } from "./Employe"
-import { Vigile } from "./vigile"
-import { carteVisiteur, HoteVisiteur, ProfileVisiteur, Visiteur } from "./visiteur"
+import type { Employe } from "./Employe"
+import type { Vigile } from "./vigile"
+import type { carteVisiteur, HoteVisiteur, ProfileVisiteur, Visiteur } from "./visiteur"
 
 export interface Visite {
     id: number
@@ -11,7 +11,8 @@ export interface Visite {
     typeCloture: string
     origine: String
     visiteurInfo: string
-    employeHoteInfo: string
+    employeHoteInfo: string,
+    dateCreation: string
 }
 
 export interface VisiteWithPersons extends Visite {    

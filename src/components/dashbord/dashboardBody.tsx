@@ -7,7 +7,7 @@ import DepartementsLePlusVisitesCard from "../cards/DepartementsLePlusVisites"
 import { useFetchStats } from "../../hooks/stats/useFetchStats"
 import EmployeLePlusVisiteCard from "../cards/EmployeLePlusVisite"
 
-const DashboardBody = () => {
+const DashboardBody = () => {    
     const { 
         nombrevisiteEnCours, 
         nombreVisiteTerminee,

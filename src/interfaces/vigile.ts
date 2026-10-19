@@ -7,5 +7,6 @@ export interface Vigile {
     posteDeGarde: string
     heureDebutGarde: string
     heureFinGarde: string
-    entreprise: string
+    entreprise: string,
+    dateCreation: string
 }
