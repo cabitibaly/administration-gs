@@ -1,16 +1,21 @@
 import { Check } from "lucide-react";
 import { useState } from "react";
+import type { Visite } from "../../interfaces/visite";
+import { formatEtatForUI } from "../../utils/formatEtat";
 
 interface VisiteLigneProps {
+    visite: Visite;
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    ref: React.RefObject<HTMLTableRowElement | null>;
 }
 
-const VisiteLigne = ({isOpen, setIsOpen}: VisiteLigneProps) => {
+const VisiteLigne = ({ref, visite, isOpen, setIsOpen}: VisiteLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
         <tr
+            ref={ref}
             onClick={() => setIsOpen(!isOpen)}
             className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}
         >
@@ -20,22 +25,31 @@ const VisiteLigne = ({isOpen, setIsOpen}: VisiteLigneProps) => {
                 </div>
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                Aoteru Misumi
+                {visite.visiteurInfo}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                Natsuki Subaru
+                {visite.employeHoteInfo}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                En prévision
+                {formatEtatForUI(visite.etatVisite)}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {new Date().toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"})}
+                {
+                    visite.heureArrivee ?
+                    new Date(visite.heureArrivee).toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"}) : "-" 
+                }
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {new Date().toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"})}
+                {
+                    visite.heureDepart ?
+                    new Date(visite.heureDepart).toLocaleTimeString("fr-FR", {hour: "2-digit", minute: "2-digit"}) : "-" 
+                }
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {new Date().toLocaleDateString("fr-FR")}
+                {
+                    visite.dateCreation ?
+                    new Date(visite.dateCreation).toLocaleDateString("fr-FR") : "-" 
+                }
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
                 <div className="flex">

@@ -6,6 +6,9 @@ import { Check } from "lucide-react"
 import VisiteLigne from "../cards/visiteLigne"
 import Datepicker from "../date-picker/datepicker"
 import VisiteDetails from "../modal/visiteDetails"
+import { useFetchVisites } from "../../hooks/visites/useFetchVisites"
+import { formatEtatForDB } from "../../utils/formatEtat"
+import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd"
 
 const VisitesBody = () => {
     const [recherche, setRecherche] = useState<string>("")
@@ -13,6 +16,8 @@ const VisitesBody = () => {
     const [date, setDate] = useState<Date | undefined>()
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
+    const { visites, handleLoadMore, hasNextPage } = useFetchVisites(date?.toISOString(), formatEtatForDB(etat));
+    const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
     return (
         <div className="w-full flex flex-col items-start justify-start gap-0">
@@ -77,15 +82,26 @@ const VisitesBody = () => {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>                                    
-                            <VisiteLigne 
+                        <tbody>
+                            {
+                                visites?.map(visite => (
+                                    <VisiteLigne
+                                        key={visite.id}
+                                        ref={sentinelRef} 
+                                        visite={visite} 
+                                        isOpen={isOpen} 
+                                        setIsOpen={setIsOpen} 
+                                    />
+                                ))
+                            }                                    
+                            {/* <VisiteLigne 
                                 isOpen={isOpen}
                                 setIsOpen={setIsOpen}
                             />
                             <VisiteLigne 
                                 isOpen={isOpen}
                                 setIsOpen={setIsOpen}
-                            />
+                            /> */}
                         </tbody>
                     </table>
                 </div>                
