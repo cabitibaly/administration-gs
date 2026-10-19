@@ -4,12 +4,18 @@ import { useState } from "react"
 import { Check } from "lucide-react"
 import VisiteurLigne from "../cards/visiteurLigne"
 import Datepicker from "../date-picker/datepicker"
+import { useFetchVisiteurs } from "../../hooks/visiteurs/useFetchVisiteurs"
+import { useDebounce } from "../../hooks/debounce/useDebounce"
+import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd"
 
 
 const VisiteurBody = () => {
     const [recherche, setRecherche] = useState<string>("")
     const [date, setDate] = useState<Date | undefined>()
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
+    const debouncedSearch = useDebounce(recherche, 500)
+    const { visiteurs, handleLoadMore, hasNextPage } = useFetchVisiteurs(debouncedSearch.trim() || "", date?.toISOString())
+    const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
     return (
         <div className="w-full flex flex-col items-start justify-start gap-0">
@@ -64,14 +70,18 @@ const VisiteurBody = () => {
                                 <th scope="col" className="px-6 py-3">
                                     Date création
                                 </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Action
-                                </th>
                             </tr>
                         </thead>
-                        <tbody>                                    
-                            <VisiteurLigne />
-                            <VisiteurLigne />
+                        <tbody>
+                            {
+                                visiteurs?.map(visiteur => (
+                                    <VisiteurLigne
+                                        key={visiteur.id}
+                                        ref={sentinelRef} 
+                                        visiteur={visiteur}
+                                    />
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>
