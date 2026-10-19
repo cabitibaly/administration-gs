@@ -3,7 +3,7 @@ import { useReducer, useState } from "react";
 import ManualForm from "../employes/manualForm";
 import ImportFile from "../dropzone/importFile";
 import type { EmployeRequest, EmployeRequestAction } from "../../interfaces/Employe";
-import { useAjouterEmploye } from "../../hooks/employes/useFetchEmployes";
+import { useAjouterEmploye, useImportEmploye } from "../../hooks/employes/useFetchEmployes";
 import { MoonLoader } from "react-spinners";
 import { TOAST_OPTIONS_INFO } from "../../constants/toastOption";
 import { toast } from "react-toastify";
@@ -47,20 +47,33 @@ interface Props {
 const AjouterEmploye = ({isOpen, setIsOpen, refetch}: Props) => {
     const [isManual, setIsManual] = useState<boolean>(true)
     const [file, setFile] = useState<File[]>([])
-    const { ajouterEmploye, isPending } = useAjouterEmploye();    
+    const { ajouterEmploye, isPending: isPendingAdd } = useAjouterEmploye();   
+    const { importerEmploye, isPending: isPendingImport } = useImportEmploye();
     const [employe, dispatch] = useReducer(employeReducer, initialState)    
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
-
-        if (employe.departement === "") {
-            toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
-            return
-        }
         
-        await ajouterEmploye(employe)
-        refetch()
-        dispatch({ type: "RESET" })
+        try {    
+            if (isManual) {
+                if (employe.departement === "") {
+                    toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
+                    return
+                }
+                
+                await ajouterEmploye(employe)                            
+            } else {
+                if (file.length === 0) {
+                    toast.error("Veuillez choisir un fichier", TOAST_OPTIONS_INFO)
+                    return
+                }
+                importerEmploye(file[0])
+            }
+        } finally {
+            refetch()
+            dispatch({ type: "RESET" })
+            setFile([])
+        }
     }
 
     return (
@@ -106,26 +119,29 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch}: Props) => {
                 </div>
                 <div className="rounded-b-2xl border-t border-gris-11 p-4 w-full flex items-center justify-between gap-4">
                     <button
-                        disabled={isPending}
+                        disabled={isPendingAdd || isPendingImport}
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
                         className="cursor-pointer text-rouge text-lg font-medium underline underline-offset-4"
                     >
                         Annuler
-                    </button>
-                    <button
-                        disabled={isPending}
-                        type="submit" 
-                        className={`py-2 px-4 rounded-xl bg-bleu-9 cursor-pointer text-gris-12 text-lg font-medium ${isPending ? "" : "hover:bg-bleu-8 transion-all duration-200"}`}
-                    >
-                        {
-                            isPending ? (
+                    </button>                    
+                    {        
+                        isPendingAdd || isPendingImport ? (
+                            <div className={`py-2 px-4 rounded-xl bg-bleu-9`}>                                                    
                                 <MoonLoader color='#EEEEF0' size={24} />
-                            ) : (
-                                "Soumettre"
-                            )
-                        }
-                    </button>
+                            </div>
+
+                        ) : (
+                            <button
+                                disabled={isPendingAdd || isPendingImport}
+                                type="submit" 
+                                className={`py-2 px-4 rounded-xl bg-bleu-9 cursor-pointer text-gris-12 text-lg font-medium ${isPendingAdd || isPendingImport ? "" : "hover:bg-bleu-8 transion-all duration-200"}`}
+                            >
+                                Soumettre                                               
+                            </button>
+                        )
+                    }
                 </div>
             </form>
         </div>
