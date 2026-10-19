@@ -5,18 +5,24 @@ import { formatEtatForUI } from "../../utils/formatEtat";
 
 interface VisiteLigneProps {
     visite: Visite;
-    isOpen: boolean;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;    
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;    
+    setVisitId: React.Dispatch<React.SetStateAction<number | null>>;
     ref: React.RefObject<HTMLTableRowElement | null>;
 }
 
-const VisiteLigne = ({ref, visite, isOpen, setIsOpen}: VisiteLigneProps) => {
+const VisiteLigne = ({ref, visite, isOpen, setIsOpen, setVisitId}: VisiteLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
+
+    const handleClick = () => {
+        setIsOpen(!isOpen)
+        setVisitId(visite.id)
+    }
 
     return (
         <tr
             ref={ref}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleClick}
             className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}
         >
             <td className="w-4 p-4">
@@ -53,8 +59,12 @@ const VisiteLigne = ({ref, visite, isOpen, setIsOpen}: VisiteLigneProps) => {
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
                 <div className="flex">
-                    <button className="cursor-pointer font-medium text-bleu-9 hover:underline">Modifier</button>
-                    <button className="cursor-pointer font-medium text-rouge ms-3 hover:underline">Supprimer</button>
+                    <button
+                        onClick={handleClick}
+                        className="cursor-pointer font-medium text-bleu-9 hover:underline"
+                    >
+                        Voir
+                    </button>
                 </div>                
             </td>
         </tr>
