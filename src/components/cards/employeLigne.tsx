@@ -5,9 +5,12 @@ import type { Employe } from "../../interfaces/Employe";
 interface EmployeLigneProps {
     employe: Employe;
     ref: React.RefObject<HTMLTableRowElement | null>;
+    setEmployeId: React.Dispatch<React.SetStateAction<number | null>>;
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EmployeLigne = ({employe, ref}: EmployeLigneProps) => {
+const EmployeLigne = ({employe, setEmployeId, setIsOpen, isOpen, ref}: EmployeLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
@@ -40,7 +43,15 @@ const EmployeLigne = ({employe, ref}: EmployeLigneProps) => {
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
                 <div className="flex">
-                    <button className="cursor-pointer font-medium text-bleu-9 hover:underline">Modifier</button>                    
+                    <button
+                        onClick={() => {
+                            setEmployeId(employe.id)
+                            setIsOpen(!isOpen)
+                        }}
+                        className="cursor-pointer font-medium text-bleu-9 hover:underline"
+                    >
+                        Modifier
+                    </button>
                 </div>                
             </td>
         </tr>

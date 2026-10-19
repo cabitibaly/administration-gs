@@ -54,3 +54,16 @@ export const importerEmployeRequest = async (file: File): Promise<ApiResponse<nu
         }
     })
 }
+
+type UpdateEmployeVariables = {
+    id: number;
+    data: EmployeRequest;
+};
+
+export const modifierEmployeRequest = async ({id, data} : UpdateEmployeVariables): Promise<ApiResponse<Employe> | null> => {
+    return await authenticatedRequest({
+        url: `/employes/${id}`,
+        method: "PUT",
+        data
+    })
+}

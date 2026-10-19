@@ -1,9 +1,9 @@
 import { X } from "lucide-react";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import ManualForm from "../employes/manualForm";
 import ImportFile from "../dropzone/importFile";
 import type { EmployeRequest, EmployeRequestAction } from "../../interfaces/Employe";
-import { useAjouterEmploye, useImportEmploye } from "../../hooks/employes/useFetchEmployes";
+import { useAjouterEmploye, useFetchEmploye, useImportEmploye, useModifierEmploye } from "../../hooks/employes/useFetchEmployes";
 import { MoonLoader } from "react-spinners";
 import { TOAST_OPTIONS_INFO } from "../../constants/toastOption";
 import { toast } from "react-toastify";
@@ -33,6 +33,8 @@ const employeReducer = (state: EmployeRequest, action: EmployeRequestAction): Em
             return { ...state, departement: action.payload }
         case "RESET":
             return initialState
+        case "UPDATE":
+            return action.payload
         default:
             return state
     }
@@ -41,36 +43,56 @@ const employeReducer = (state: EmployeRequest, action: EmployeRequestAction): Em
 interface Props {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    employeId: number | null;    
     refetch: () => void;
 }
 
-const AjouterEmploye = ({isOpen, setIsOpen, refetch}: Props) => {
+const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
     const [isManual, setIsManual] = useState<boolean>(true)
     const [file, setFile] = useState<File[]>([])
-    const { ajouterEmploye, isPending: isPendingAdd } = useAjouterEmploye();   
-    const { importerEmploye, isPending: isPendingImport } = useImportEmploye();
-    const [employe, dispatch] = useReducer(employeReducer, initialState)    
+    const { ajouterEmploye, isPending: isPendingAdd } = useAjouterEmploye();
+    const { modifierEmploye, isPending: isPendingUpdate } = useModifierEmploye();   
+    const { importerEmploye, isPending: isPendingImport } = useImportEmploye();    
+    const [employe, dispatch] = useReducer(employeReducer, initialState)
+    const { employe: employeToModify, isLoading, refetch: refetchAfterUpdate } = useFetchEmploye(employeId);
+
+    console.log(employeToModify)
+
+    useEffect(() => {
+        if (employeToModify) {
+            dispatch({ type: "UPDATE", payload: employeToModify })
+        }
+    }, [employeToModify])
+
+    const addEmploye = async () => {
+        if (isManual) {            
+            await ajouterEmploye(employe)                            
+        } else {
+            if (file.length === 0) {
+                toast.error("Veuillez choisir un fichier", TOAST_OPTIONS_INFO)
+                return
+            }
+            importerEmploye(file[0])
+        }
+    }
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
+
+        if (employe.departement === "") {
+            toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
+            return
+        }
         
         try {    
-            if (isManual) {
-                if (employe.departement === "") {
-                    toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
-                    return
-                }
-                
-                await ajouterEmploye(employe)                            
+            if (employeId === null) {
+                await addEmploye()
             } else {
-                if (file.length === 0) {
-                    toast.error("Veuillez choisir un fichier", TOAST_OPTIONS_INFO)
-                    return
-                }
-                importerEmploye(file[0])
+                await modifierEmploye({ id: employeId, data: employe })
             }
         } finally {
             refetch()
+            refetchAfterUpdate()
             dispatch({ type: "RESET" })
             setFile([])
         }
@@ -84,33 +106,37 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch}: Props) => {
                 className="relative pt-4 rounded-3xl bg-gris-12 w-1/2 h-full flex flex-col items-start justidy-center gap-4"
             >
                 <div className="sticky top-0 z-10 border-b border-gris-11 px-4 pb-4 w-full flex items-center justify-between gap-6">
-                    <span className="text-xl text-gris-1 font-medium">Ajouter un employé</span>
+                    <span className="text-xl text-gris-1 font-medium">{employeId === null ? "Ajouter un employé" : "Modifier un employé"}</span>
                     <button type="button" onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                         <X strokeWidth={2} className="size-6 stroke-gris-1"/>
                     </button>
                 </div>
                 <div className="overflow-y-auto px-4 flex-1 w-full flex flex-col items-start justify-start gap-4">
-                    <div className="p-1 bg-gris-11/20 rounded-xl w-full flex items-center justify-between gap-1">
-                        <button
-                            type="button"
-                            onClick={() => setIsManual(true)}
-                            className={`cursor-pointer border border-transparent px-4 py-2.5 w-1/2 rounded-lg tetx-lg font-medium transition duration-200 ${ isManual ?  "bg-bleu-9 text-bleu-12 hover:bg-bleu-8" : "bg-transparent text-gris-10 hover:border-bleu-9 hover:text-bleu-9"}`}
-                        >
-                            Saisie manuelle
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setIsManual(false)}
-                            className={`cursor-pointer border border-transparent px-4 py-2.5 w-1/2 rounded-lg tetx-lg font-medium transition duration-200 ${ !isManual ?  "bg-bleu-9 text-bleu-12 hover:bg-bleu-8" : "bg-transparent text-gris-10 hover:border-bleu-9 hover:text-bleu-9"}`}
-                        >
-                            Importer un fichier
-                        </button>
-                    </div>
+                    {    
+                        employeId === null &&
+                        <div className="p-1 bg-gris-11/20 rounded-xl w-full flex items-center justify-between gap-1">
+                            <button
+                                type="button"
+                                onClick={() => setIsManual(true)}
+                                className={`cursor-pointer border border-transparent px-4 py-2.5 w-1/2 rounded-lg tetx-lg font-medium transition duration-200 ${ isManual ?  "bg-bleu-9 text-bleu-12 hover:bg-bleu-8" : "bg-transparent text-gris-10 hover:border-bleu-9 hover:text-bleu-9"}`}
+                            >
+                                Saisie manuelle
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setIsManual(false)}
+                                className={`cursor-pointer border border-transparent px-4 py-2.5 w-1/2 rounded-lg tetx-lg font-medium transition duration-200 ${ !isManual ?  "bg-bleu-9 text-bleu-12 hover:bg-bleu-8" : "bg-transparent text-gris-10 hover:border-bleu-9 hover:text-bleu-9"}`}
+                            >
+                                Importer un fichier
+                            </button>
+                        </div>
+                    }
                     {
                         isManual && 
                             <ManualForm  
                                 employe={employe}
                                 dispatch={dispatch}
+                                employeId={employeId}
                             />
                     }
                     {
@@ -119,7 +145,7 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch}: Props) => {
                 </div>
                 <div className="rounded-b-2xl border-t border-gris-11 p-4 w-full flex items-center justify-between gap-4">
                     <button
-                        disabled={isPendingAdd || isPendingImport}
+                        disabled={isPendingAdd || isPendingImport || isPendingUpdate}
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
                         className="cursor-pointer text-rouge text-lg font-medium underline underline-offset-4"
@@ -127,16 +153,16 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch}: Props) => {
                         Annuler
                     </button>                    
                     {        
-                        isPendingAdd || isPendingImport ? (
+                        isPendingAdd || isPendingImport || isPendingUpdate ? (
                             <div className={`py-2 px-4 rounded-xl bg-bleu-9`}>                                                    
                                 <MoonLoader color='#EEEEF0' size={24} />
                             </div>
 
                         ) : (
                             <button
-                                disabled={isPendingAdd || isPendingImport}
+                                disabled={isPendingAdd || isPendingImport || isPendingUpdate}
                                 type="submit" 
-                                className={`py-2 px-4 rounded-xl bg-bleu-9 cursor-pointer text-gris-12 text-lg font-medium ${isPendingAdd || isPendingImport ? "" : "hover:bg-bleu-8 transion-all duration-200"}`}
+                                className={`py-2 px-4 rounded-xl bg-bleu-9 cursor-pointer text-gris-12 text-lg font-medium hover:bg-bleu-8 transion-all duration-200`}
                             >
                                 Soumettre                                               
                             </button>

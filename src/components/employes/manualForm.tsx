@@ -7,9 +7,10 @@ import { useDebounce } from "../../hooks/debounce/useDebounce";
 interface ManualFormProps {
     employe: EmployeRequest;
     dispatch: React.Dispatch<EmployeRequestAction>;    
+    employeId: number | null;
 }
 
-const ManualForm = ({employe, dispatch}: ManualFormProps) => {
+const ManualForm = ({employe, dispatch, employeId}: ManualFormProps) => {
     const [selected, setSelected] = useState<string>("");
     const [recherche, setRecherche] = useState<string>("");
     const debouncedSearch = useDebounce(recherche, 500)

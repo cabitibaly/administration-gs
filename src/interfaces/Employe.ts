@@ -25,3 +25,4 @@ export type EmployeRequestAction =
     | {type: "SET_MATRICULE"; payload: string}
     | {type: "SET_DEPARTEMENT"; payload: string}
     | {type: "RESET"}
+    | {type: "UPDATE"; payload: EmployeRequest}

@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 import type { ApiResponse } from "../../interfaces/apiResponse"
 import type { PagedResponse } from "../../interfaces/pagedResponse"
 import type { Employe } from "../../interfaces/Employe"
-import { ajouterEmployeRequest, getEmployeRequest, getEmployesRequest, importerEmployeRequest } from "../../services/employes.service"
+import { ajouterEmployeRequest, getEmployeRequest, getEmployesRequest, importerEmployeRequest, modifierEmployeRequest } from "../../services/employes.service"
 import { toast } from "react-toastify"
 import { TOAST_OPTIONS_ERROR, TOAST_OPTIONS_SUCCESS } from "../../constants/toastOption"
 
@@ -33,11 +33,12 @@ export const useFetchEmployes = (search?: string, date?: string) => {
     }
 }
 
-export const useFetchEmploye = (id: number) => {
+export const useFetchEmploye = (id: number | null) => {
     const { data, isLoading, refetch } = useQuery<ApiResponse<Employe> | null>({
         queryKey: ['employe', id],
-        queryFn: async () => await getEmployeRequest(id),
+        queryFn: async () => await getEmployeRequest(id!),
         staleTime: 5 * 60 * 1000,
+        enabled: id !== null
     })    
     
     return {
@@ -48,7 +49,7 @@ export const useFetchEmploye = (id: number) => {
 }
 
 export const useAjouterEmploye = () => {
-    const { mutate, isPending } = useMutation({
+    const { mutateAsync, isPending } = useMutation({
         mutationFn: ajouterEmployeRequest,
         onSuccess: (data) => {
             toast.success(data?.message, TOAST_OPTIONS_SUCCESS)
@@ -59,7 +60,7 @@ export const useAjouterEmploye = () => {
     })
 
     return {
-        ajouterEmploye: mutate,
+        ajouterEmploye: mutateAsync,
         isPending
     }
 }
@@ -77,6 +78,23 @@ export const useImportEmploye = () => {
 
     return {
         importerEmploye: mutate,
+        isPending
+    }
+}
+
+export const useModifierEmploye = () => {
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: modifierEmployeRequest,
+        onSuccess: (data) => {
+            toast.success(data?.message ?? "L'employé a été modifié avec succès", TOAST_OPTIONS_SUCCESS)
+        },
+        onError: (error) => {
+            toast.error(error.message ?? "Erreur lors de la modification de l'employé", TOAST_OPTIONS_ERROR)
+        }
+    })
+
+    return {
+        modifierEmploye: mutateAsync,
         isPending
     }
 }

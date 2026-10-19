@@ -12,12 +12,13 @@ import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd"
 
 const EmployeBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [employeId, setEmployeId] = useState<number | null>(null);
     const [recherche, setRecherche] = useState<string>("")
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
     const [date, setDate] = useState<Date | undefined>()
     const debouncedSearch = useDebounce(recherche, 500)
     const { employes, handleLoadMore, hasNextPage, refetch } = useFetchEmployes(debouncedSearch.trim() || "", date?.toISOString())
-    const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
+    const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);    
 
     return (
         <div className="w-full flex flex-col items-start justify-start gap-0">
@@ -48,7 +49,10 @@ const EmployeBody = () => {
                         </div> 
                     </div> 
                     <button 
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => {
+                            setEmployeId(null)
+                            setIsOpen(!isOpen)                            
+                        }}
                         className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
                     >
                         Ajouter
@@ -95,6 +99,9 @@ const EmployeBody = () => {
                                         key={employe.id}
                                         ref={sentinelRef} 
                                         employe={employe}
+                                        setEmployeId={setEmployeId}
+                                        setIsOpen={setIsOpen}
+                                        isOpen={isOpen}
                                     />
                                 ))
                             }                            
@@ -107,6 +114,7 @@ const EmployeBody = () => {
                 <AjouterEmploye 
                     isOpen={isOpen}
                     setIsOpen={setIsOpen} 
+                    employeId={employeId}
                     refetch={refetch}   
                 />
             }
