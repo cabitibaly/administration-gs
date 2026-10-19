@@ -6,10 +6,8 @@ import VisiteEnCoursCard from "../cards/visiteEnCoursCard"
 import DepartementsLePlusVisitesCard from "../cards/DepartementsLePlusVisites"
 import { useFetchStats } from "../../hooks/stats/useFetchStats"
 import EmployeLePlusVisiteCard from "../cards/EmployeLePlusVisite"
-import { useFetchVisites } from "../../hooks/visites/useFetchVisites"
 
-const DashboardBody = () => {
-    const {visites} = useFetchVisites(new Date().toISOString(), "EN_COURS")
+const DashboardBody = () => {    
     const { 
         nombrevisiteEnCours, 
         nombreVisiteTerminee,
@@ -49,10 +47,7 @@ const DashboardBody = () => {
                         nombreVisiteParJour={nombreVisiteParJour!} 
                         isLoading={isLoading}
                     />  
-                    <VisiteEnCoursCard 
-                        visites={visites} 
-                        isLoading={isLoading} 
-                    />
+                    <VisiteEnCoursCard />
                 </div>
                 <div className="rounded-2xl w-full shrink-0 flex items-start justify-start gap-4">
                     <EmployeLePlusVisiteCard employes={visitesParEmploye!} />  

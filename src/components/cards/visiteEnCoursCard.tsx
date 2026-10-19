@@ -1,12 +1,9 @@
 import { TimerIcon } from "lucide-react"
-import type { Visite } from "../../interfaces/visite"
+import { useFetchVisites } from "../../hooks/visites/useFetchVisites"
 
-interface VisiteEnCoursCardProps {
-    visites: Visite[],
-    isLoading: boolean,
-}
+const VisiteEnCoursCard = () => {
+    const { visites } = useFetchVisites(new Date().toISOString(), "EN_COURS")
 
-const VisiteEnCoursCard = ({visites, isLoading}: VisiteEnCoursCardProps) => {
     return (
         <div className="relative p-2.5 bg-bleu-12 rounded-2xl w-1/2 h-90 flex flex-col items-start justify-start gap-3">
             <div className="flex items-center justify-center gap-2">
