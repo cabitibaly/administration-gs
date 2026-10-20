@@ -6,9 +6,11 @@ import ImportFile from "../dropzone/importFile";
 interface Props {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    vigileId: number | null;
+    refetch: () => void;
 }
 
-const AjouterVigile = ({isOpen, setIsOpen}: Props) => {
+const AjouterVigile = ({isOpen, setIsOpen, refetch, vigileId}: Props) => {
     const [isManual, setIsManual] = useState<boolean>(true)
     const [file, setFile] = useState<File[]>([])
 
