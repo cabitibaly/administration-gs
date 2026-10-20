@@ -54,9 +54,7 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
     const { modifierEmploye, isPending: isPendingUpdate } = useModifierEmploye();   
     const { importerEmploye, isPending: isPendingImport } = useImportEmploye();    
     const [employe, dispatch] = useReducer(employeReducer, initialState)
-    const { employe: employeToModify, isLoading, refetch: refetchAfterUpdate } = useFetchEmploye(employeId);
-
-    console.log(employeToModify)
+    const { employe: employeToModify, isLoading, refetch: refetchAfterUpdate } = useFetchEmploye(employeId);    
 
     useEffect(() => {
         if (employeToModify) {
@@ -65,7 +63,12 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
     }, [employeToModify])
 
     const addEmploye = async () => {
-        if (isManual) {            
+        if (isManual) {
+            if (employe.departement === "") {
+                toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
+                return
+            }
+            
             await ajouterEmploye(employe)                            
         } else {
             if (file.length === 0) {
@@ -77,12 +80,7 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
     }
 
     const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        if (employe.departement === "") {
-            toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
-            return
-        }
+        e.preventDefault()        
         
         try {    
             if (employeId === null) {

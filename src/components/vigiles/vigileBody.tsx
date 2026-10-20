@@ -48,7 +48,10 @@ const VigileBody = () => {
                         </div>
                     </div>
                     <button 
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => {
+                            setIsOpen(!isOpen)
+                            setVigileId(null)
+                        }}
                         className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
                     >
                         Ajouter
