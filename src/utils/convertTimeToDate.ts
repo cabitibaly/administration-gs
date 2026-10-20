@@ -8,3 +8,11 @@ export const convertTimeToDate = (time: string): Date => {
 
     return date;
 }
+
+export const convertDateToTime = (dateString: string): string => {
+    if (!dateString) return "";
+
+    const date = new Date(dateString);
+
+    return date.toTimeString().slice(0, 5);
+}
