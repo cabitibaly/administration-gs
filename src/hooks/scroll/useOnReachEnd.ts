@@ -1,9 +1,7 @@
 import { useEffect, useRef } from "react"
 
 export const useOnReachEnd = (callback: () => void, isEnabled = true) => {
-    const ref = useRef<HTMLTableRowElement>(null)
-
-    console.log("On reach end", isEnabled)
+    const ref = useRef<HTMLTableRowElement>(null)    
 
     useEffect(() => {
         if (!isEnabled || !ref.current) return

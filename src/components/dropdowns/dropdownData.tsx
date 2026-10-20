@@ -1,6 +1,7 @@
 import { ChevronDown, Search } from "lucide-react";
 import { useRef, useState } from "react";
 import { useClickOutside } from "../../hooks/outside-click/useClickOutside";
+import { MoonLoader } from "react-spinners";
 
 interface DropdownDataProps<T> {
     data: T[];
@@ -11,6 +12,9 @@ interface DropdownDataProps<T> {
     getLabel: (item: T) => string;
     getKey: (item: T) => string | number;
     placeholder?: string;
+    isLoading?: boolean;
+    hasNextPage?: boolean;
+    handleLoadMore?: () => void;
 }
 
 const DropdownData = <T,> ({
@@ -21,7 +25,10 @@ const DropdownData = <T,> ({
     recherche, 
     getLabel,
     getKey,
-    placeholder = "Selectionner..."
+    placeholder = "Selectionner...",
+    isLoading = false,
+    hasNextPage = false,
+    handleLoadMore = () => {}
 }: DropdownDataProps<T>) => {
     const [isOpen, setIsOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -64,29 +71,44 @@ const DropdownData = <T,> ({
                                 <div className="absolute top-0 inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
                                     <Search strokeWidth={1.5} size={20} color='#797B86' />
                                 </div>
-                            </div>
-                            {
-                                dataFiltered.map((item) => {
-                                    const key = getKey(item);
-                                    const label = getLabel(item);
-                                    const isSelected = label === selected;
+                            </div>                            
+                            {        
+                                isLoading ? (
+                                    <div className="w-full flex items-center justify-center">
+                                        <MoonLoader color='#0C7DEF' size={24} />
+                                    </div>
+                                ) : (                                    
+                                        dataFiltered.map((item) => {
+                                            const key = getKey(item);
+                                            const label = getLabel(item);
+                                            const isSelected = label === selected;
 
-                                    return (    
-                                        <button 
-                                            key={key} 
-                                            type="button" 
-                                            onClick={() => {
-                                                setSelected(label)
-                                                setIsOpen(false)
-                                                setRecherche("")
-                                            }} 
-                                            className={`cursor-pointer p-2 rounded-sm w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20 ${isSelected ? "bg-gris-10/20" : ""}`}
-                                        >
-                                            {label}
-                                        </button>
+                                            return (    
+                                                <button 
+                                                    key={key} 
+                                                    type="button" 
+                                                    onClick={() => {
+                                                        setSelected(label)
+                                                        setIsOpen(false)
+                                                        setRecherche("")
+                                                    }} 
+                                                    className={`cursor-pointer p-2 rounded-sm w-full text-left text-base text-gris-6 font-normal transition duration-200 hover:bg-gris-10/20 ${isSelected ? "bg-gris-10/20" : ""}`}
+                                                >
+                                                    {label}
+                                                </button>
+                                            )
+                                        })
                                     )
-                                })
-                            }                                
+                            }
+                            {
+                                hasNextPage &&
+                                <button
+                                    onClick={() => handleLoadMore?.()} 
+                                    className="z-50 w-full text-center text-base text-bleu-9 font-medium underline transition duration-200 hover:bg-gris-10/20"
+                                >
+                                        Charger plus de départements
+                                </button>
+                            }
                         </div>
                 }
             </div>
