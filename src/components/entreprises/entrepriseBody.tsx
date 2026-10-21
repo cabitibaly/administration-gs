@@ -4,11 +4,18 @@ import { useState } from "react";
 import { Check } from "lucide-react";
 import EntrepriseLigne from "../cards/EntrepriseLigne";
 import AjouterEntreprise from "../modal/ajouterEntreprise";
+import { useDebounce } from "../../hooks/debounce/useDebounce";
+import { useFetchEntreprises } from "../../hooks/entrerpise/useFetchEntreprise";
+import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd";
 
 const EntrepriseBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [entrepriseId, setEntrepriseId] = useState<number | null>(null);
     const [recherche, setRecherche] = useState<string>("")
+    const debouncedSearch = useDebounce(recherche, 500)
+    const { entreprises, handleLoadMore, hasNextPage, refetch } = useFetchEntreprises(debouncedSearch.trim() || "")
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
+    const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
     return (
         <div className="w-full flex flex-col items-start justify-start gap-0">
@@ -21,7 +28,10 @@ const EntrepriseBody = () => {
                         <input value={recherche} onChange={(e) => setRecherche(e.target.value)} type="text" className="border border-gris-8/20 bg-gris-11/20 rounded-xl w-80 py-2 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Recherche..." />
                     </div> 
                     <button 
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => {
+                            setIsOpen(!isOpen)
+                            setEntrepriseId(null)
+                        }}
                         className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
                     >
                         Ajouter
@@ -59,7 +69,19 @@ const EntrepriseBody = () => {
                             </tr>
                         </thead>
                         <tbody>                                    
-                            <EntrepriseLigne />
+                            {
+                                entreprises?.map((entreprise, index) => (
+                                    <EntrepriseLigne
+                                        key={entreprise.id}
+                                        index={index + 1}
+                                        ref={sentinelRef} 
+                                        entreprise={entreprise}
+                                        setEntrepriseId={setEntrepriseId}
+                                        setIsOpen={setIsOpen}
+                                        isOpen={isOpen}
+                                    />
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -68,7 +90,9 @@ const EntrepriseBody = () => {
                 isOpen && 
                 <AjouterEntreprise 
                     isOpen={isOpen}
-                    setIsOpen={setIsOpen}    
+                    setIsOpen={setIsOpen} 
+                    entrepriseId={entrepriseId}
+                    refetch={refetch}   
                 />
             }
         </div>

@@ -1,5 +1,7 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { getEntrepriseRequest, getEntreprisesRequest } from "../../services/entreprises.service"
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
+import { ajouterEntrepriseRequest, getEntrepriseRequest, getEntreprisesRequest, modifierEntrepriseRequest } from "../../services/entreprises.service"
+import { toast } from "react-toastify"
+import { TOAST_OPTIONS_ERROR, TOAST_OPTIONS_SUCCESS } from "../../constants/toastOption"
 
 export const useFetchEntreprises = (nom?: string) => {
     const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, refetch } = useInfiniteQuery({
@@ -40,5 +42,39 @@ export const useFetchEntreprise = (id: number | null) => {
         entreprise: data?.data,
         isLoading,
         refetch
+    }
+}
+
+export const useAjouterEntreprise = () => {
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: ajouterEntrepriseRequest,
+        onSuccess: (data) => {
+            toast.success(data?.message, TOAST_OPTIONS_SUCCESS)
+        },
+        onError: (error) => {
+            toast.error(error.message ?? "Erreur lors de l'ajout de l'entreprise", TOAST_OPTIONS_ERROR)
+        }
+    })
+
+    return {
+        ajouterEntreprise: mutateAsync,
+        isPending
+    }
+}
+
+export const useModifierEntreprise = () => {
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: modifierEntrepriseRequest,
+        onSuccess: (data) => {
+            toast.success(data?.message, TOAST_OPTIONS_SUCCESS)
+        },
+        onError: (error) => {
+            toast.error(error.message ?? "Erreur lors de la modification de l'entreprise", TOAST_OPTIONS_ERROR)
+        }
+    })
+
+    return {
+        modifierEntreprise: mutateAsync,
+        isPending
     }
 }
