@@ -120,7 +120,7 @@ const AjouterVigile = ({isOpen, setIsOpen, refetch, vigileId}: Props) => {
                 className="relative pt-4 rounded-3xl bg-gris-12 w-1/2 h-full flex flex-col items-start justidy-center gap-2"
             >
                 <div className="sticky top-0 z-10 border-b border-gris-11 px-3 pb-3 w-full flex items-center justify-between gap-6">
-                    <span className="text-xl text-gris-1 font-medium">Ajouter un vigile</span>
+                    <span className="text-xl text-gris-1 font-medium">{vigileId ? "Modifier" : "Ajouter"} une vigile</span>
                     <button type="button" onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                         <X strokeWidth={2} className="size-6 stroke-gris-1"/>
                     </button>
