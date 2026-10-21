@@ -4,11 +4,18 @@ import { useState } from "react";
 import DepartementLigne from "../cards/DepartementLigne";
 import { Check } from "lucide-react";
 import AjouterDepartement from "../modal/ajouterDepartement";
+import { useDebounce } from "../../hooks/debounce/useDebounce";
+import { useFetchDepartements } from "../../hooks/departemets/useFetchDepartements";
+import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd";
 
 const DepartementBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [recherche, setRecherche] = useState<string>("")
+    const [departementId, setDepartementId] = useState<number | null>(null);
+    const debouncedSearch = useDebounce(recherche, 500)
+    const { departements, handleLoadMore, hasNextPage, refetch } = useFetchDepartements(debouncedSearch)
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
+    const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
     return (
         <div className="w-full flex flex-col items-start justify-start gap-0">
@@ -21,7 +28,10 @@ const DepartementBody = () => {
                         <input value={recherche} onChange={(e) => setRecherche(e.target.value)} type="text" className="border border-gris-8/20 bg-gris-11/20 rounded-xl w-80 py-2 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Recherche..." />
                     </div> 
                     <button 
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => {
+                            setDepartementId(null)
+                            setIsOpen(!isOpen)
+                        }}
                         className="cursor-pointer px-4 py-2 bg-bleu-9 rounded-xl tetx-lg text-bleu-12 font-medium transition duration-200 hover:bg-bleu-11"
                     >
                         Ajouter
@@ -52,8 +62,20 @@ const DepartementBody = () => {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>                                    
-                            <DepartementLigne />
+                        <tbody>
+                            {
+                                departements?.map((departement, index) => (
+                                    <DepartementLigne
+                                        key={departement.id}
+                                        index={index + 1}
+                                        ref={sentinelRef} 
+                                        departement={departement}
+                                        setIsOpen={setIsOpen}
+                                        isOpen={isOpen}
+                                        setDepartementId={setDepartementId}
+                                    />
+                                ))
+                            }                                                                
                         </tbody>
                     </table>
                 </div>
@@ -62,7 +84,9 @@ const DepartementBody = () => {
                 isOpen && 
                 <AjouterDepartement 
                     isOpen={isOpen}
-                    setIsOpen={setIsOpen}    
+                    setIsOpen={setIsOpen}                     
+                    departementId={departementId}
+                    refetch={refetch}
                 />
             }
         </div>

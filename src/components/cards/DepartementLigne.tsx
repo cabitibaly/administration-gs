@@ -1,29 +1,51 @@
 import { Check } from "lucide-react";
 import { useState } from "react";
+import type { Departement } from "../../interfaces/departement";
 
-const DepartementLigne = () => {
+interface DepartementLigneProps {
+    index: number,
+    departement: Departement,
+    ref: React.RefObject<HTMLTableRowElement | null>,
+    setIsOpen: (isOpen: boolean) => void,
+    isOpen: boolean,
+    setDepartementId: React.Dispatch<React.SetStateAction<number | null>>,
+}
+
+const DepartementLigne = ({ index, departement, ref, setIsOpen, isOpen, setDepartementId }: DepartementLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
-        <tr className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}>
+        <tr ref={ref} className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}>
             <td className="w-4 p-4">
                 <div onClick={(e) => {e.stopPropagation();setIsChecked(!isChecked)}} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
                     {isChecked && <Check className={`size-4 stroke-bleu-12`} />}
                 </div>
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                001
+                {index}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                Ressources Humaines
+                {departement.nom}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {new Date().toLocaleDateString("fr-FR")}
+                {
+                    departement.dateCreation ?
+                        new Date(departement.dateCreation).toLocaleDateString("fr-FR") : "-"
+
+                    
+                }
             </td>            
             <td className="px-6 py-4 text-gris-1 font-normal">
                 <div className="flex">
-                    <button className="cursor-pointer font-medium text-bleu-9 hover:underline">Modifier</button>
-                    <button className="cursor-pointer font-medium text-rouge ms-3 hover:underline">Supprimer</button>
+                    <button
+                        onClick={() => {
+                            setIsOpen(true)
+                            setDepartementId(departement.id)
+                        }}
+                        className="cursor-pointer font-medium text-bleu-9 hover:underline"
+                    >
+                        Modifier
+                    </button>                    
                 </div>                
             </td>
         </tr>

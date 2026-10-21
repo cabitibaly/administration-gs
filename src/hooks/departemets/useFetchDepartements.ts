@@ -1,8 +1,10 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { getDepartementRequest, getDepartementsRequest } from "../../services/departements.service"
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
+import { ajouterDepartementRequest, getDepartementRequest, getDepartementsRequest, modifierDepartementRequest } from "../../services/departements.service"
 import type { ApiResponse } from "../../interfaces/apiResponse"
-import type { Departement } from "../../interfaces/departement"
+import type { Departement, DepartementRequest } from "../../interfaces/departement"
 import type { PagedResponse } from "../../interfaces/pagedResponse"
+import { toast } from "react-toastify"
+import { TOAST_OPTIONS_SUCCESS } from "../../constants/toastOption"
 
 export const useFetchDepartements = (search?: string) => {
     const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage, refetch } = useInfiniteQuery<ApiResponse<PagedResponse<Departement>> | null>({
@@ -43,5 +45,31 @@ export const useFetchDepartement = (id: number) => {
         departement: data?.data,
         isLoading,
         refetch,
+    }
+}
+
+export const useAjouterDepartement = () => {
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: ajouterDepartementRequest,
+        onSuccess: (data) => {toast.success(data?.message, TOAST_OPTIONS_SUCCESS)},
+        onError: (error) => {toast.error(error.message ?? "Erreur lors de l'ajout du département", TOAST_OPTIONS_SUCCESS)}
+    })
+
+    return {
+        ajouterDepartement: mutateAsync,
+        isPending
+    }
+}
+
+export const useModifierDepartement = () => {
+    const { mutateAsync, isPending } = useMutation({
+        mutationFn: modifierDepartementRequest,
+        onSuccess: (data) => {toast.success(data?.message, TOAST_OPTIONS_SUCCESS)},
+        onError: (error) => {toast.error(error.message ?? "Erreur lors de la modification du département", TOAST_OPTIONS_SUCCESS)}
+    })
+
+    return {
+        modifierDepartement: mutateAsync,
+        isPending
     }
 }
