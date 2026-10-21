@@ -1,7 +1,17 @@
 import { Check } from "lucide-react";
 import { useState } from "react";
+import type { Entreprise } from "../../interfaces/entreprise";
 
-const EntrepriseLigne = () => {
+interface EntrepriseLigneProps {
+    index: number,
+    entreprise: Entreprise,
+    ref: React.RefObject<HTMLTableRowElement | null>,
+    setIsOpen: (isOpen: boolean) => void,
+    isOpen: boolean,
+    setEntrepriseId: React.Dispatch<React.SetStateAction<number | null>>,
+}
+
+const EntrepriseLigne = ({ index, entreprise, ref, setIsOpen, isOpen, setEntrepriseId }: EntrepriseLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
@@ -12,24 +22,34 @@ const EntrepriseLigne = () => {
                 </div>
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                001
+                {index}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                Tiger
+                {entreprise.nom}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                contact@tiger.com
+                {entreprise.email}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                12345678
+                {entreprise.telephone}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {new Date().toLocaleDateString("fr-FR")}
+                {
+                    entreprise.dateCreation ?
+                        new Date(entreprise.dateCreation).toLocaleDateString("fr-FR") : "-"                    
+                }
             </td>            
             <td className="px-6 py-4 text-gris-1 font-normal">
                 <div className="flex">
-                    <button className="cursor-pointer font-medium text-bleu-9 hover:underline">Modifier</button>
-                    <button className="cursor-pointer font-medium text-rouge ms-3 hover:underline">Supprimer</button>
+                    <button
+                        onClick={() => {
+                            setIsOpen(true)
+                            setEntrepriseId(entreprise.id)
+                        }}
+                        className="cursor-pointer font-medium text-bleu-9 hover:underline"
+                    >
+                        Modifier
+                    </button>                    
                 </div>                
             </td>
         </tr>

@@ -13,7 +13,7 @@ const DepartementBody = () => {
     const [recherche, setRecherche] = useState<string>("")
     const [departementId, setDepartementId] = useState<number | null>(null);
     const debouncedSearch = useDebounce(recherche, 500)
-    const { departements, handleLoadMore, hasNextPage, refetch } = useFetchDepartements(debouncedSearch)
+    const { departements, handleLoadMore, hasNextPage, refetch } = useFetchDepartements(debouncedSearch.trim() || "")
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
     const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
