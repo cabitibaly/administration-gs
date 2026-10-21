@@ -64,9 +64,10 @@ const DepartementBody = () => {
                         </thead>
                         <tbody>
                             {
-                                departements?.map(departement => (
+                                departements?.map((departement, index) => (
                                     <DepartementLigne
                                         key={departement.id}
+                                        index={index + 1}
                                         ref={sentinelRef} 
                                         departement={departement}
                                         setIsOpen={setIsOpen}

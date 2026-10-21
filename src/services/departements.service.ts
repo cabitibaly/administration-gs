@@ -38,3 +38,15 @@ export const ajouterDepartementRequest = async (data: DepartementRequest): Promi
     })
 }
 
+interface UpdateEmployeVariables {
+    id: number,
+    data: DepartementRequest
+}
+
+export const modifierDepartementRequest = async ({id, data}: UpdateEmployeVariables): Promise<ApiResponse<Departement> | null> => {
+    return await authenticatedRequest({
+        url: `/departement/${id}`,
+        method: "PUT",
+        data
+    })
+}

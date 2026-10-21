@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Departement } from "../../interfaces/departement";
 
 interface DepartementLigneProps {
+    index: number,
     departement: Departement,
     ref: React.RefObject<HTMLTableRowElement | null>,
     setIsOpen: (isOpen: boolean) => void,
@@ -10,7 +11,7 @@ interface DepartementLigneProps {
     setDepartementId: React.Dispatch<React.SetStateAction<number | null>>,
 }
 
-const DepartementLigne = ({ departement, ref, setIsOpen, isOpen, setDepartementId }: DepartementLigneProps) => {
+const DepartementLigne = ({ index, departement, ref, setIsOpen, isOpen, setDepartementId }: DepartementLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
@@ -21,7 +22,7 @@ const DepartementLigne = ({ departement, ref, setIsOpen, isOpen, setDepartementI
                 </div>
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                001
+                {index}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
                 {departement.nom}
@@ -44,8 +45,7 @@ const DepartementLigne = ({ departement, ref, setIsOpen, isOpen, setDepartementI
                         className="cursor-pointer font-medium text-bleu-9 hover:underline"
                     >
                         Modifier
-                    </button>
-                    <button className="cursor-pointer font-medium text-rouge ms-3 hover:underline">Supprimer</button>
+                    </button>                    
                 </div>                
             </td>
         </tr>
