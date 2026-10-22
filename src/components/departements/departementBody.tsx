@@ -7,13 +7,14 @@ import AjouterDepartement from "../modal/ajouterDepartement";
 import { useDebounce } from "../../hooks/debounce/useDebounce";
 import { useFetchDepartements } from "../../hooks/departemets/useFetchDepartements";
 import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd";
+import { MoonLoader } from "react-spinners";
 
 const DepartementBody = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [recherche, setRecherche] = useState<string>("")
     const [departementId, setDepartementId] = useState<number | null>(null);
     const debouncedSearch = useDebounce(recherche, 500)
-    const { departements, handleLoadMore, hasNextPage, refetch } = useFetchDepartements(debouncedSearch.trim() || "")
+    const { departements, handleLoadMore, hasNextPage, refetch, isLoading } = useFetchDepartements(debouncedSearch.trim() || "")
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
     const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
@@ -38,46 +39,60 @@ const DepartementBody = () => {
                     </button>
                 </div>
                 <div className="border border-bleu-11 w-full h-full relative rounded-3xl overflow-x-auto">                            
-                    <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12 rtl:text-right">
-                        <thead className="text-base text-bleu-9 uppercase bg-tranparent">
-                            <tr>
-                                <th scope="col" className="p-4">
-                                    <div className="flex items-center">
-                                        <div onClick={() => setIsParentChecked(!isParentChecked)} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isParentChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
-                                            {isParentChecked && <Check className={`size-4 stroke-bleu-12`} />}
-                                        </div>
+                    {   
+                        isLoading ? (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <MoonLoader size={24} color="#0C7DEF" />
+                            </div>                            
+                        ) : (
+                                departements?.length == 0 ? (
+                                    <div className="w-full h-full flex items-center justify-center">                            
+                                        <span className="text-lg text-gris-1 font-medium">Aucun département</span>
                                     </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    N°
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Nom département
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Date création
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                departements?.map((departement, index) => (
-                                    <DepartementLigne
-                                        key={departement.id}
-                                        index={index + 1}
-                                        ref={sentinelRef} 
-                                        departement={departement}
-                                        setIsOpen={setIsOpen}
-                                        isOpen={isOpen}
-                                        setDepartementId={setDepartementId}
-                                    />
-                                ))
-                            }                                                                
-                        </tbody>
-                    </table>
+                                ) : (
+                                        <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12 rtl:text-right">
+                                            <thead className="text-base text-bleu-9 uppercase bg-tranparent">
+                                                <tr>
+                                                    <th scope="col" className="p-4">
+                                                        <div className="flex items-center">
+                                                            <div onClick={() => setIsParentChecked(!isParentChecked)} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isParentChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
+                                                                {isParentChecked && <Check className={`size-4 stroke-bleu-12`} />}
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        N°
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Nom département
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Date création
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    departements?.map((departement, index) => (
+                                                        <DepartementLigne
+                                                            key={departement.id}
+                                                            index={index + 1}
+                                                            ref={sentinelRef} 
+                                                            departement={departement}
+                                                            setIsOpen={setIsOpen}
+                                                            isOpen={isOpen}
+                                                            setDepartementId={setDepartementId}
+                                                        />
+                                                    ))
+                                                }                                                                
+                                            </tbody>
+                                        </table>
+                                    )
+                            )
+                    }
                 </div>
             </div>
             {

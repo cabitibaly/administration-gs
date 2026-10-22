@@ -7,6 +7,7 @@ import Datepicker from "../date-picker/datepicker"
 import { useFetchVisiteurs } from "../../hooks/visiteurs/useFetchVisiteurs"
 import { useDebounce } from "../../hooks/debounce/useDebounce"
 import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd"
+import { MoonLoader } from "react-spinners"
 
 
 const VisiteurBody = () => {
@@ -14,7 +15,7 @@ const VisiteurBody = () => {
     const [date, setDate] = useState<Date | undefined>()
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
     const debouncedSearch = useDebounce(recherche, 500)
-    const { visiteurs, handleLoadMore, hasNextPage } = useFetchVisiteurs(debouncedSearch.trim() || "", date?.toISOString())
+    const { visiteurs, handleLoadMore, hasNextPage, isLoading } = useFetchVisiteurs(debouncedSearch.trim() || "", date?.toISOString())
     const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);
 
     return (
@@ -44,46 +45,60 @@ const VisiteurBody = () => {
                         </button>                                                                      
                     </div>
                 </div>
-                <div className="border border-bleu-11 w-full flex-1 relative rounded-3xl overflow-x-auto shrink-0 flex items-center justify-center">                            
-                    <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12">
-                        <thead className="text-base text-bleu-9 uppercase bg-tranparent">
-                            <tr>
-                                <th scope="col" className="p-4">
-                                    <div className="flex items-center">
-                                        <div onClick={() => setIsParentChecked(!isParentChecked)} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isParentChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
-                                            {isParentChecked && <Check className={`size-4 stroke-bleu-12`} />}
-                                        </div>
+                <div className="border border-bleu-11 w-full flex-1 relative rounded-3xl overflow-x-auto shrink-0">                            
+                    {  
+                        isLoading ? (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <MoonLoader size={24} color="#0C7DEF" />
+                            </div>
+                        ) : (
+                                visiteurs?.length == 0 ? (
+                                    <div className="w-full flex items-center justify-center">                            
+                                        <span className="text-lg text-gris-1 font-medium">Aucun visiteur</span>
                                     </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3 w-60">
-                                    Nom et prénom
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Téléphone
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Type de carte
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Numéro de carte
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Date création
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                visiteurs?.map(visiteur => (
-                                    <VisiteurLigne
-                                        key={visiteur.id}
-                                        ref={sentinelRef} 
-                                        visiteur={visiteur}
-                                    />
-                                ))
-                            }
-                        </tbody>
-                    </table>
+                                ) : (                                    
+                                        <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12">
+                                            <thead className="text-base text-bleu-9 uppercase bg-tranparent">
+                                                <tr>
+                                                    <th scope="col" className="p-4">
+                                                        <div className="flex items-center">
+                                                            <div onClick={() => setIsParentChecked(!isParentChecked)} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isParentChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
+                                                                {isParentChecked && <Check className={`size-4 stroke-bleu-12`} />}
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3 w-60">
+                                                        Nom et prénom
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Téléphone
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Type de carte
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Numéro de carte
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Date création
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    visiteurs?.map(visiteur => (
+                                                        <VisiteurLigne
+                                                            key={visiteur.id}
+                                                            ref={sentinelRef} 
+                                                            visiteur={visiteur}
+                                                        />
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>
+                                    )
+                            )
+                    }
                 </div>
             </div>
         </div>

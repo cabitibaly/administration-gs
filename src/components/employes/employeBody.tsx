@@ -8,6 +8,7 @@ import { useDebounce } from "../../hooks/debounce/useDebounce"
 import { useFetchEmployes } from "../../hooks/employes/useFetchEmployes"
 import Datepicker from "../date-picker/datepicker"
 import { useOnReachEnd } from "../../hooks/scroll/useOnReachEnd"
+import { MoonLoader } from "react-spinners"
 
 
 const EmployeBody = () => {
@@ -17,7 +18,7 @@ const EmployeBody = () => {
     const [isParentChecked, setIsParentChecked] = useState<boolean>(false);
     const [date, setDate] = useState<Date | undefined>()
     const debouncedSearch = useDebounce(recherche, 500)
-    const { employes, handleLoadMore, hasNextPage, refetch } = useFetchEmployes(debouncedSearch.trim() || "", date?.toISOString())
+    const { employes, handleLoadMore, hasNextPage, refetch, isLoading } = useFetchEmployes(debouncedSearch.trim() || "", date?.toISOString())
     const sentinelRef = useOnReachEnd(handleLoadMore, hasNextPage);    
 
     return (
@@ -58,55 +59,69 @@ const EmployeBody = () => {
                         Ajouter
                     </button>
                 </div>
-                <div className="border border-bleu-11 w-full flex-1 relative rounded-3xl overflow-x-auto shrink-0 flex items-center justify-center">                            
-                    <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12">
-                        <thead className="text-base text-bleu-9 uppercase bg-tranparent">
-                            <tr>
-                                <th scope="col" className="p-4">
-                                    <div className="flex items-center">
-                                        <div onClick={() => setIsParentChecked(!isParentChecked)} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isParentChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
-                                            {isParentChecked && <Check className={`size-4 stroke-bleu-12`} />}
-                                        </div>
+                <div className="border border-bleu-11 w-full flex-1 relative rounded-3xl overflow-x-auto shrink-0">                            
+                    {   
+                        isLoading ? (
+                            <div className="w-full h-full flex items-center justify-center">
+                                <MoonLoader size={24} color="#0C7DEF" />
+                            </div>
+                        ) : (
+                                employes?.length == 0 ? (
+                                    <div className="w-full h-full flex items-center justify-center">                            
+                                        <span className="text-lg text-gris-1 font-medium">Aucun employé</span>
                                     </div>
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Nom et prénom
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Téléphone
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Email
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Matricule
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Département
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Date création
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Action
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                employes?.map(employe => (
-                                    <EmployeLigne
-                                        key={employe.id}
-                                        ref={sentinelRef} 
-                                        employe={employe}
-                                        setEmployeId={setEmployeId}
-                                        setIsOpen={setIsOpen}
-                                        isOpen={isOpen}
-                                    />
-                                ))
-                            }                            
-                        </tbody>
-                    </table>
+                                ) : (                                    
+                                        <table className="absolute top-0 left-0 w-full text-base text-left text-gris-12">
+                                            <thead className="text-base text-bleu-9 uppercase bg-tranparent">
+                                                <tr>
+                                                    <th scope="col" className="p-4">
+                                                        <div className="flex items-center">
+                                                            <div onClick={() => setIsParentChecked(!isParentChecked)} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isParentChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
+                                                                {isParentChecked && <Check className={`size-4 stroke-bleu-12`} />}
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Nom et prénom
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Téléphone
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Email
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Matricule
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Département
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Date création
+                                                    </th>
+                                                    <th scope="col" className="px-6 py-3">
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    employes?.map(employe => (
+                                                        <EmployeLigne
+                                                            key={employe.id}
+                                                            ref={sentinelRef} 
+                                                            employe={employe}
+                                                            setEmployeId={setEmployeId}
+                                                            setIsOpen={setIsOpen}
+                                                            isOpen={isOpen}
+                                                        />
+                                                    ))
+                                                }                            
+                                            </tbody>
+                                        </table>
+                                )
+                        )
+                    }
                 </div>
             </div>
             {
