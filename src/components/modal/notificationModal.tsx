@@ -2,6 +2,8 @@ import { X } from "lucide-react"
 import NotificationCard from "../cards/notificationCard";
 import { useRef } from "react";
 import { useClickOutside } from "../../hooks/outside-click/useClickOutside";
+import { useFetchListeNotification } from "../../hooks/notifications/useFetchNotification";
+import { MoonLoader } from "react-spinners";
 
 interface Props {
     isOpen: boolean;
@@ -9,8 +11,8 @@ interface Props {
 }
 
 const NotificationModal = ({isOpen, setIsOpen}: Props) => {
+    const { notifications, isLoading, handleLoadMore, hasNextPage } = useFetchListeNotification();
     const ref = useRef<HTMLDivElement>(null);
-
     useClickOutside(ref, () => setIsOpen(false), isOpen);
 
     return (
@@ -20,17 +22,35 @@ const NotificationModal = ({isOpen, setIsOpen}: Props) => {
                 <button onClick={() => setIsOpen(!isOpen)} className="cursor-pointer">
                     <X strokeWidth={1.5} className="size-6 stroke-gris-1"/>
                 </button>
-            </div>    
-            <NotificationCard 
-                notification={{
-                    id: 1,
-                    titre: "Notification",
-                    contenu: "Contenu de la notification",
-                    type: "info",
-                    estLu: false,
-                    date: "2023-03-01T00:00:00.000Z"
-                }}
-            />
+            </div>
+            {
+                isLoading ? (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <MoonLoader size={24} color="#0C7DEF" />                        
+                    </div>
+                ) : (
+                    notifications.length == 0 ? (
+                        <div className="w-full h-full flex items-center justify-center">                            
+                            <span className="text-lg text-gris-1 font-medium">Aucune notification</span>
+                        </div>
+                    ) : (
+                        notifications.map(notif => (
+                            <NotificationCard 
+                                notification={notif}
+                            />
+                        ))
+                    )
+                )
+            }    
+            {
+                hasNextPage &&
+                <button
+                    onClick={() => handleLoadMore?.()} 
+                    className="z-50 w-full text-center text-base text-bleu-9 font-medium underline transition duration-200 hover:bg-gris-10/20"
+                >
+                        Charger plus de départements
+                </button>
+            }                        
         </div>
     )
 }
