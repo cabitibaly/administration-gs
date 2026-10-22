@@ -1,11 +1,16 @@
 import { Mail } from "lucide-react"
 import type { Notification } from "../../interfaces/notification";
+import { useMarquerCommeLu, useSupprimerNotification } from "../../hooks/notifications/useFetchNotification";
+import { MoonLoader } from "react-spinners";
 
 interface NotificationCardProps {
     notification: Notification;
 }
 
 const NotificationCard = ({notification}: NotificationCardProps) => {
+    const { marquerCommeLu, isPending: isPendingHasRead } = useMarquerCommeLu();
+    const { supprimerNotification, isPending: isPendingDelete } = useSupprimerNotification();
+
     return (
         <div className="relative border-b border-gris-11 p-4 w-full flex items-start justify-center gap-4">
             <div className={`size-10 aspect-square rounded-full bg-bleu-11 flex items-center justify-center`}>
@@ -16,14 +21,31 @@ const NotificationCard = ({notification}: NotificationCardProps) => {
                 <span className="text-base text-left text-gris-1 font-normal">{notification.contenu}</span>
                 <span className="text-base text-left text-gris-9/50 font-normal">{new Date(notification.date || "").toLocaleString("fr-FR", {day: "2-digit", month: "long", year: "numeric"})}</span>
                 <div className="w-full flex items-center justify-start gap-4">
-                    <button 
-                        onClick={() => console.log("Has read")} 
+                    <button
+                        disabled={isPendingHasRead} 
+                        onClick={() => marquerCommeLu(notification.id)} 
                         className={`cursor-pointer px-3 py-1.5 bg-bleu-9 rounded-lg text-base text-gris-12 font-medium transition duration-200 hover:bg-bleu-9/50 ${notification.estLu ? "hidden" : ""}`}
                     >
-                        Marquer comme lu
+                        {
+                            isPendingHasRead ? (
+                                <MoonLoader size={20} color="#EEEEF0" />                        
+                            ) : (
+                                "Marquer comme lu"       
+                            )                         
+                        }                        
                     </button>
-                    <button onClick={() => console.log("Deleted")} className="cursor-pointer px-3 py-1.5 bg-rouge/50 rounded-lg text-base text-rouge font-medium transition duration-200 hover:bg-rouge/20">
-                        Supprimer
+                    <button
+                        disabled={isPendingDelete} 
+                        onClick={() => supprimerNotification(notification.id)} 
+                        className="cursor-pointer px-3 py-1.5 bg-rouge/50 rounded-lg text-base text-rouge font-medium transition duration-200 hover:bg-rouge/20"
+                    >
+                        {
+                            isPendingDelete ? (
+                                <MoonLoader size={20} color="#EEEEF0" />                        
+                            ) : (
+                                "Supprimer"       
+                            )                         
+                        }
                     </button>
                 </div>
             </div>            

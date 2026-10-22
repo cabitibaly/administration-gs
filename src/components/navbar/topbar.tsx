@@ -1,6 +1,7 @@
 import { useState } from "react";
 import NotificationModal from "../modal/notificationModal";
 import { BellIcon } from "lucide-react";
+import { useFetchListeNotification } from "../../hooks/notifications/useFetchNotification";
 
 interface Props {
     pathname: string;
@@ -8,6 +9,7 @@ interface Props {
 
 const Topbar = ({pathname}: Props) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const { hasNoReadNotification } = useFetchListeNotification();  
 
     return (
         <div className="relative px-8 py-4 w-full  flex items-center justify-between gap-4">
@@ -15,7 +17,10 @@ const Topbar = ({pathname}: Props) => {
             <div className="flex items-center justify-center gap-4">
                 <div onClick={() => setIsOpen(!isOpen)} className="relative cursor-pointer size-10 aspect-square rounded-full bg-bleu-12 flex items-center justify-center transition duration-200 ease-in-out hover:bg-bleu-11/70">
                     <BellIcon strokeWidth={1.25} className="size-7 stroke-bleu-9 aspect-square" />
-                    <div className={`absolute top-0.5 right-0.5 size-2.5 bg-bleu-9 rounded-full block`} />
+                    {
+                        hasNoReadNotification &&
+                        <div className="absolute top-0.5 right-0.5 size-2.5 bg-bleu-9 rounded-full block" />
+                    }                    
                 </div>
                 <div className="flex items-center justify-center gap-2">
                     <>
