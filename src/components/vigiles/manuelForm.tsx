@@ -133,7 +133,7 @@ const ManualForm = ({vigile, dispatch}: ManualFormProps) => {
                         id="email"
                         value={vigile.email}
                         onChange={(e) => dispatch({ type: "SET_EMAIL", payload: e.target.value })}
-                        type="text"
+                        type="email"
                         required 
                         className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" 
                         placeholder="Saisir le mail..." 

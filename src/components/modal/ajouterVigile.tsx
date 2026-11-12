@@ -7,6 +7,7 @@ import { useAjouterVigile, useFetchVigile, useImporterVigile, useModifierVigile 
 import { toast } from "react-toastify";
 import { TOAST_OPTIONS_INFO } from "../../constants/toastOption";
 import { MoonLoader } from "react-spinners";
+import { isValidEmail, isValidPhone } from "../../utils/fieldValidation";
 
 const initialState: VigileRequest = {
     nom: "",
@@ -82,6 +83,16 @@ const AjouterVigile = ({isOpen, setIsOpen, refetch, vigileId}: Props) => {
     
             if (vigile.heureFinGarde === "") {
                 toast.error("Veuillez sélectionner une heure de fin de garde", TOAST_OPTIONS_INFO)
+                return
+            }
+
+            if (!isValidPhone(vigile.telephone)) {
+                toast.info("Veuillez saisir un numéro de téléphone valide", TOAST_OPTIONS_INFO)
+                return
+            }
+            
+            if (!isValidEmail(vigile.email)) {
+                toast.info("Veuillez saisir une adresse email valide", TOAST_OPTIONS_INFO)
                 return
             }
             

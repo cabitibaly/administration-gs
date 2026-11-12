@@ -7,6 +7,7 @@ import { useAjouterEmploye, useFetchEmploye, useImportEmploye, useModifierEmploy
 import { MoonLoader } from "react-spinners";
 import { TOAST_OPTIONS_INFO } from "../../constants/toastOption";
 import { toast } from "react-toastify";
+import { isValidEmail, isValidPhone } from "../../utils/fieldValidation";
 
 const initialState: EmployeRequest = {
     nom: "",
@@ -68,6 +69,16 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
                 toast.error("Veuillez sélectionner un département", TOAST_OPTIONS_INFO)
                 return
             }
+
+            if (!isValidPhone(employe.telephone)) {
+                toast.info("Veuillez saisir un numéro de téléphone valide", TOAST_OPTIONS_INFO)
+                return
+            }
+
+            if (!isValidEmail(employe.email)) {
+                toast.info("Veuillez saisir une adresse email valide", TOAST_OPTIONS_INFO)
+                return
+            }
             
             await ajouterEmploye(employe)                            
         } else {
@@ -90,7 +101,7 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
             }
         } finally {
             refetch()
-            refetchAfterUpdate()
+            if (employeId !== null) refetchAfterUpdate()
             dispatch({ type: "RESET" })
             setFile([])
         }

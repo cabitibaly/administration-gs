@@ -3,8 +3,8 @@ import type { ToastOptions } from "react-toastify";
 export const TOAST_OPTIONS_ERROR: ToastOptions = {
   type: "error",
   position: "top-right",
-  autoClose: 2000,
-  hideProgressBar: true,
+  autoClose: 5000,
+  hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
@@ -14,8 +14,8 @@ export const TOAST_OPTIONS_ERROR: ToastOptions = {
 export const TOAST_OPTIONS_INFO: ToastOptions = {
   type: "info",
   position: "top-right",
-  autoClose: 2000,
-  hideProgressBar: true,
+  autoClose: 5000,
+  hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
@@ -25,8 +25,8 @@ export const TOAST_OPTIONS_INFO: ToastOptions = {
 export const TOAST_OPTIONS_SUCCESS: ToastOptions = {
   type: "success",
   position: "top-right",
-  autoClose: 2000,
-  hideProgressBar: true,
+  autoClose: 5000,
+  hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
