@@ -2,19 +2,6 @@ import { useRef, useState } from "react";
 import { useClickOutside } from "../../hooks/outside-click/useClickOutside";
 import { ChevronDown } from "lucide-react";
 
-const formatEtat = (etat: string) => {
-    switch (etat) {
-        case "En cours":
-            return "EN_COURS"
-        case "En prévision":
-            return "EN_PREVISION"
-        case "Terminé":
-            return "TERMINEE"
-        default:
-            return "N/A"
-    }
-}
-
 interface Props {
     setEtat: React.Dispatch<React.SetStateAction<string>>;
     etat: string;

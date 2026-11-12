@@ -7,11 +7,11 @@ interface DepartementLigneProps {
     departement: Departement,
     ref: React.RefObject<HTMLTableRowElement | null>,
     setIsOpen: (isOpen: boolean) => void,
-    isOpen: boolean,
+    isOpen?: boolean,
     setDepartementId: React.Dispatch<React.SetStateAction<number | null>>,
 }
 
-const DepartementLigne = ({ index, departement, ref, setIsOpen, isOpen, setDepartementId }: DepartementLigneProps) => {
+const DepartementLigne = ({ index, departement, ref, setIsOpen, setDepartementId }: DepartementLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (

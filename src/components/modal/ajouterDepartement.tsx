@@ -14,7 +14,7 @@ interface Props {
 
 const AjouterDepartement = ({isOpen, setIsOpen, departementId, refetch}: Props) => {
     const [departement, setDepartement] = useState<string>("")
-    const { departement: departementToModify, isLoading, refetch: refetchAfterUpdate } = useFetchDepartement(departementId!);
+    const { departement: departementToModify, refetch: refetchAfterUpdate } = useFetchDepartement(departementId!);
     const { modifierDepartement, isPending: isPendingUpdate } = useModifierDepartement();
     const { ajouterDepartement, isPending: isPendingAdd } = useAjouterDepartement();
 

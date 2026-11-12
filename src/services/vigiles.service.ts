@@ -1,5 +1,4 @@
 import type { ApiResponse } from "../interfaces/apiResponse"
-import type { Employe } from "../interfaces/Employe"
 import type { PagedResponse } from "../interfaces/pagedResponse"
 import type { Vigile, VigileRequest, VigileWithUserInfo } from "../interfaces/vigile"
 import { authenticatedRequest } from "../libs/authUtils"

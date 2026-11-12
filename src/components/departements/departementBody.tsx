@@ -82,8 +82,7 @@ const DepartementBody = () => {
                                                             index={index + 1}
                                                             ref={sentinelRef} 
                                                             departement={departement}
-                                                            setIsOpen={setIsOpen}
-                                                            isOpen={isOpen}
+                                                            setIsOpen={setIsOpen}                                                            
                                                             setDepartementId={setDepartementId}
                                                         />
                                                     ))

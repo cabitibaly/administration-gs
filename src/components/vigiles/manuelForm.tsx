@@ -9,16 +9,14 @@ import { useFetchEntreprises } from "../../hooks/entrerpise/useFetchEntreprise";
 interface ManualFormProps {
     vigile: VigileRequest;
     dispatch: React.Dispatch<VigileRequestAction>;    
-    vigileId: number | null;
+    vigileId?: number | null;
 }
 
-const ManualForm = ({vigile, dispatch, vigileId}: ManualFormProps) => {
+const ManualForm = ({vigile, dispatch}: ManualFormProps) => {
     const [selected, setSelected] = useState<string>("");
     const [recherche, setRecherche] = useState<string>("");
     const debouncedSearch = useDebounce(recherche, 500) 
     const { entreprises, handleLoadMore, hasNextPage, isLoading } = useFetchEntreprises(debouncedSearch.trim() || "")
-    const [heureDebut, setHeureDebut] = useState<string>("");
-    const [heureFin, setHeureFin] = useState<string>("");
 
     useEffect(() => {
         if (selected !== "") dispatch({ type: "SET_ENTREPRISE", payload: selected })

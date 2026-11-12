@@ -44,7 +44,7 @@ const DropdownData = <T,> ({
     return (
         <div
             ref={ref}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen(true)}
             className={`relative bg-gris-11/20 w-full py-3 px-3 rounded-xl flex items-center jusitfy-start ${isOpen ? "border border-gris-8" : ""}`}
         >
             <div className="w-full flex items-center justify-between gap-4">
@@ -87,7 +87,8 @@ const DropdownData = <T,> ({
                                                 <button 
                                                     key={key} 
                                                     type="button" 
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
                                                         setSelected(label)
                                                         setIsOpen(false)
                                                         setRecherche("")

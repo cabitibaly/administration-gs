@@ -89,8 +89,7 @@ const EntrepriseBody = () => {
                                                             ref={sentinelRef} 
                                                             entreprise={entreprise}
                                                             setEntrepriseId={setEntrepriseId}
-                                                            setIsOpen={setIsOpen}
-                                                            isOpen={isOpen}
+                                                            setIsOpen={setIsOpen}                                                            
                                                         />
                                                     ))
                                                 }

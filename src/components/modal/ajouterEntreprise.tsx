@@ -18,7 +18,7 @@ const AjouterEntreprise = ({isOpen, setIsOpen, entrepriseId, refetch}: Props) =>
     const [telephone, setTelephone] = useState<string>("")
     const { ajouterEntreprise, isPending: isPendingAdd } = useAjouterEntreprise();
     const { modifierEntreprise, isPending: isPendingUpdate } = useModifierEntreprise();
-    const { entreprise: entrepriseToModify, isLoading, refetch: refetchAfterUpdate } = useFetchEntreprise(entrepriseId!);
+    const { entreprise: entrepriseToModify, refetch: refetchAfterUpdate } = useFetchEntreprise(entrepriseId!);
 
     const reset = () => {
         setNom("")

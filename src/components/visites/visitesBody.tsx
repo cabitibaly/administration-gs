@@ -51,7 +51,7 @@ const VisitesBody = () => {
                             </div>
                         ) : (   
                                 visites?.length == 0 ? (
-                                    <div className="w-full flex items-center justify-center">                            
+                                    <div className="w-full h-full flex items-center justify-center">                            
                                         <span className="text-lg text-gris-1 font-medium">Aucune visite</span>
                                     </div>
                                 ) : (    

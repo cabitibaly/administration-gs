@@ -155,9 +155,7 @@ const AjouterVigile = ({isOpen, setIsOpen, refetch, vigileId}: Props) => {
                                     isManual && 
                                     <ManualForm 
                                         dispatch={dispatch}
-                                        vigile={vigile}
-                                        vigileId={vigileId}
-
+                                        vigile={vigile}                                        
                                     />
                                 }
                                 {

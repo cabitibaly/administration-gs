@@ -140,7 +140,7 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
                                         <ManualForm  
                                             employe={employe}
                                             dispatch={dispatch}
-                                            employeId={employeId}
+                                            // employeId={employeId}
                                         />
                                 }
                                 {

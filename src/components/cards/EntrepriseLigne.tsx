@@ -7,15 +7,15 @@ interface EntrepriseLigneProps {
     entreprise: Entreprise,
     ref: React.RefObject<HTMLTableRowElement | null>,
     setIsOpen: (isOpen: boolean) => void,
-    isOpen: boolean,
+    isOpen?: boolean,
     setEntrepriseId: React.Dispatch<React.SetStateAction<number | null>>,
 }
 
-const EntrepriseLigne = ({ index, entreprise, ref, setIsOpen, isOpen, setEntrepriseId }: EntrepriseLigneProps) => {
+const EntrepriseLigne = ({ index, entreprise, ref, setIsOpen, setEntrepriseId }: EntrepriseLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
 
     return (
-        <tr className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}>
+        <tr ref={ref} className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}>
             <td className="w-4 p-4">
                 <div onClick={(e) => {e.stopPropagation();setIsChecked(!isChecked)}} className={`rounded-md cursor-pointer border size-5 flex items-center justify-center transition duration-200 ease-in-out ${isChecked ? "bg-bleu-9 border-transparent" : "border-bleu-6 bg-transparent"}`}>
                     {isChecked && <Check className={`size-4 stroke-bleu-12`} />}
