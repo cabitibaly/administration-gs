@@ -1,6 +1,6 @@
 import type { ApiResponse } from "../interfaces/apiResponse"
 import type { PagedResponse } from "../interfaces/pagedResponse"
-import type { Vigile, VigileRequest, VigileWithUserInfo } from "../interfaces/vigile"
+import type { Vigile, VigileRequest } from "../interfaces/vigile"
 import { authenticatedRequest } from "../libs/authUtils"
 
 export const getVigilesRequest = async (
@@ -32,7 +32,7 @@ export const getVigileRequest = async (id: number): Promise<ApiResponse<Vigile> 
     })
 }
 
-export const ajouterVigileRequest = async (data: VigileRequest): Promise<ApiResponse<VigileWithUserInfo> | null> => {
+export const ajouterVigileRequest = async (data: VigileRequest): Promise<ApiResponse<Vigile> | null> => {
     return await authenticatedRequest({
         url: `/vigiles`,
         method: "POST",

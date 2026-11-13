@@ -1,5 +1,5 @@
 import type { ApiResponse } from "../interfaces/apiResponse"
-import type { Employe, EmployeRequest, EmployeWithUserInfo } from "../interfaces/Employe"
+import type { Employe, EmployeRequest } from "../interfaces/Employe"
 import type { PagedResponse } from "../interfaces/pagedResponse"
 import { authenticatedRequest } from "../libs/authUtils"
 
@@ -33,7 +33,7 @@ export const getEmployeRequest = async (id: number): Promise<ApiResponse<Employe
     })
 }
 
-export const ajouterEmployeRequest = async (data: EmployeRequest): Promise<ApiResponse<EmployeWithUserInfo> | null> => {
+export const ajouterEmployeRequest = async (data: EmployeRequest): Promise<ApiResponse<Employe> | null> => {
     return await authenticatedRequest({
         url: `/employes`,
         method: "POST",

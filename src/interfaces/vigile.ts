@@ -14,11 +14,6 @@ export interface Vigile extends VigileRequest {
     dateCreation: string
 }
 
-export interface VigileWithUserInfo extends Vigile {
-    username: string
-    password: string
-}
-
 export type VigileRequestAction = 
     | {type: "SET_NOM"; payload: string}
     | {type: "SET_PRENOM"; payload: string}

@@ -30,3 +30,16 @@ export const logoutRequest = async () => {
 
     return response.message
 }
+
+interface ResetPasswordVariables {
+    id: number,
+    role: string
+}
+
+export const resetPasswordRequest = async ({id, role}: ResetPasswordVariables) => {
+    return await authenticatedRequest<ApiResponse<null>>({
+        url: `/auth/${id}/reset-password`,
+        method: "PATCH",
+        params: { role }
+    })
+}

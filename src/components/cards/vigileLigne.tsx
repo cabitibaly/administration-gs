@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { useState } from "react";
 import type { Vigile } from "../../interfaces/vigile";
+import { useAuth } from "../../hooks/auth/useAuth";
 
 interface VigileLigneProps {
     vigile: Vigile;
@@ -12,6 +13,7 @@ interface VigileLigneProps {
 
 const VigileLigne = ({vigile, setVigileId, setIsOpen, isOpen, ref}: VigileLigneProps) => {
     const [isChecked, setIsChecked] = useState<boolean>(false)
+    const { resetPassword, isResettingPassword } = useAuth()
 
     return (
         <tr ref={ref} className={`cursor-pointer border-t border-bleu-11 hover:bg-bleu-12/40 ${isChecked ? "bg-bleu-12/40" : "bg-transprent"}`}>
@@ -51,6 +53,15 @@ const VigileLigne = ({vigile, setVigileId, setIsOpen, isOpen, ref}: VigileLigneP
                         className="cursor-pointer font-medium text-bleu-9 hover:underline"
                     >
                         Modifier
+                    </button>                    
+                    <button
+                        disabled={isResettingPassword}
+                        onClick={async () => resetPassword({id: vigile.id, role: "vigile"})} 
+                        className="ms-3 text-left cursor-pointer font-medium text-green-600 hover:underline"
+                    >
+                        {
+                            isResettingPassword ? "Réinitialisation..." : "Réinit. mot de passe"
+                        }                        
                     </button>                    
                 </div>                
             </td>

@@ -12,11 +12,6 @@ export interface Employe extends EmployeRequest {
     dateCreation: string
 }
 
-export interface EmployeWithUserInfo extends Employe {
-    username: string
-    password: string
-}
-
 export type EmployeRequestAction = 
     | {type: "SET_NOM"; payload: string}
     | {type: "SET_PRENOM"; payload: string}

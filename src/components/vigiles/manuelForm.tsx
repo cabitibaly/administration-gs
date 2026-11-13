@@ -8,10 +8,11 @@ import { useFetchEntreprises } from "../../hooks/entrerpise/useFetchEntreprise";
 interface ManualFormProps {
     vigile: VigileRequest;
     dispatch: React.Dispatch<VigileRequestAction>;    
-    vigileId?: number | null;
+    isUpdating: boolean;
+    vigileId?: number | null;    
 }
 
-const ManualForm = ({vigile, dispatch}: ManualFormProps) => {
+const ManualForm = ({vigile, dispatch, isUpdating}: ManualFormProps) => {
     const [selected, setSelected] = useState<string>("");
     const [recherche, setRecherche] = useState<string>("");
     const debouncedSearch = useDebounce(recherche, 500) 
@@ -28,11 +29,9 @@ const ManualForm = ({vigile, dispatch}: ManualFormProps) => {
     const handleChangeHeure = (e: React.ChangeEvent<HTMLInputElement>, isHeureDebut: boolean) => {
         const date = convertTimeToDate(e.target.value)
         if (isHeureDebut) {
-            dispatch({ type: "SET_HEURE_DEBUT_GARDE", payload: date.toISOString() })
-            // setHeureDebut(e.target.value)
+            dispatch({ type: "SET_HEURE_DEBUT_GARDE", payload: date.toISOString() })            
         } else {
-            dispatch({ type: "SET_HEURE_FIN_GARDE", payload: date.toISOString() })
-            // setHeureFin(e.target.value)
+            dispatch({ type: "SET_HEURE_FIN_GARDE", payload: date.toISOString() })            
         }
     }
 
@@ -131,11 +130,12 @@ const ManualForm = ({vigile, dispatch}: ManualFormProps) => {
                     <label htmlFor="email" className="text-lg text-gris-8 font-medium">Email</label>
                     <input 
                         id="email"
+                        disabled={isUpdating}                        
                         value={vigile.email}
                         onChange={(e) => dispatch({ type: "SET_EMAIL", payload: e.target.value })}
                         type="email"
                         required 
-                        className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" 
+                        className={`border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10 ${isUpdating ? "cursor-not-allowed" : ""}`}
                         placeholder="Saisir le mail..." 
                     />
                 </div>
