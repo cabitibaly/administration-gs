@@ -41,6 +41,14 @@ export const ajouterEmployeRequest = async (data: EmployeRequest): Promise<ApiRe
     })
 }
 
+export const inscriptionEmployeRequest = async (data: EmployeRequest): Promise<ApiResponse<Employe> | null> => {
+    return await authenticatedRequest({
+        url: `/employes/public/inscription`,
+        method: "POST",
+        data
+    })
+}
+
 export const importerEmployeRequest = async (file: File): Promise<ApiResponse<null> | null> => {
     const formData = new FormData()
     formData.append("file", file)

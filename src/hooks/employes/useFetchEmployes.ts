@@ -2,7 +2,7 @@ import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
 import type { ApiResponse } from "../../interfaces/apiResponse"
 import type { PagedResponse } from "../../interfaces/pagedResponse"
 import type { Employe } from "../../interfaces/Employe"
-import { ajouterEmployeRequest, getEmployeRequest, getEmployesRequest, importerEmployeRequest, modifierEmployeRequest } from "../../services/employes.service"
+import { ajouterEmployeRequest, getEmployeRequest, getEmployesRequest, importerEmployeRequest, inscriptionEmployeRequest, modifierEmployeRequest } from "../../services/employes.service"
 import { toast } from "react-toastify"
 import { TOAST_OPTIONS_ERROR, TOAST_OPTIONS_SUCCESS } from "../../constants/toastOption"
 
@@ -48,9 +48,9 @@ export const useFetchEmploye = (id: number | null) => {
     }
 }
 
-export const useAjouterEmploye = () => {
+export const useAjouterEmploye = ({isPublicInscription = false}: {isPublicInscription?: boolean}) => {
     const { mutateAsync, isPending } = useMutation({
-        mutationFn: ajouterEmployeRequest,
+        mutationFn: isPublicInscription ? inscriptionEmployeRequest : ajouterEmployeRequest,
         onSuccess: (data) => {
             toast.success(data?.message, TOAST_OPTIONS_SUCCESS)
         },
