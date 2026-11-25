@@ -2,44 +2,12 @@ import { X } from "lucide-react";
 import { useEffect, useReducer, useState } from "react";
 import ManualForm from "../employes/manualForm";
 import ImportFile from "../dropzone/importFile";
-import type { EmployeRequest, EmployeRequestAction } from "../../interfaces/Employe";
+import { employeReducer, initialState} from "../../interfaces/Employe";
 import { useAjouterEmploye, useFetchEmploye, useImportEmploye, useModifierEmploye } from "../../hooks/employes/useFetchEmployes";
 import { MoonLoader } from "react-spinners";
 import { TOAST_OPTIONS_INFO } from "../../constants/toastOption";
 import { toast } from "react-toastify";
 import { isValidEmail, isValidPhone } from "../../utils/fieldValidation";
-
-const initialState: EmployeRequest = {
-    nom: "",
-    prenom: "",
-    email: "",
-    telephone: "",
-    matricule: "",
-    departement: ""
-}
-
-const employeReducer = (state: EmployeRequest, action: EmployeRequestAction): EmployeRequest => {
-    switch (action.type) {
-        case "SET_NOM":
-            return { ...state, nom: action.payload }
-        case "SET_PRENOM":
-            return { ...state, prenom: action.payload }
-        case "SET_EMAIL":
-            return { ...state, email: action.payload }
-        case "SET_TELEPHONE":
-            return { ...state, telephone: action.payload }
-        case "SET_MATRICULE":
-            return { ...state, matricule: action.payload }
-        case "SET_DEPARTEMENT":
-            return { ...state, departement: action.payload }
-        case "RESET":
-            return initialState
-        case "UPDATE":
-            return action.payload
-        default:
-            return state
-    }
-}
 
 interface Props {
     isOpen: boolean;
@@ -51,7 +19,7 @@ interface Props {
 const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
     const [isManual, setIsManual] = useState<boolean>(true)
     const [file, setFile] = useState<File[]>([])
-    const { ajouterEmploye, isPending: isPendingAdd } = useAjouterEmploye();
+    const { ajouterEmploye, isPending: isPendingAdd } = useAjouterEmploye({isPublicInscription: false});
     const { modifierEmploye, isPending: isPendingUpdate } = useModifierEmploye();   
     const { importerEmploye, isPending: isPendingImport } = useImportEmploye();    
     const [employe, dispatch] = useReducer(employeReducer, initialState)

@@ -8,12 +8,14 @@ import Vigiles from './pages/vigiles'
 import Departements from './pages/departements'
 import Entreprises from './pages/entreprises'
 import ProtectedRoute from './components/loading/protectedRoute'
+import InscriptionPublic from './pages/public/inscription-public'
 
 const App = () => {
     return (
         <>
             <Routes>                
                 <Route path="/" element={<Connexion />} />
+                <Route path="/public/inscription" element={<InscriptionPublic />} />
                 <Route element={<ProtectedRoute />}>
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/visites" element={<Visites />} />
