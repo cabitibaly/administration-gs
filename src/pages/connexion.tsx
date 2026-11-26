@@ -4,13 +4,13 @@ import { useAuth } from '../hooks/auth/useAuth'
 import { MoonLoader } from "react-spinners";
 
 const Connexion = () => {
-    const [email, setEmail] = useState<string>("")
+    const [identifiant, setIdentifiant] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const { login, isLoggingIn } = useAuth()    
 
     const connexion = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault()
-        login({ email, password })
+        login({ identifiant, password })
     }
 
     return (
@@ -21,14 +21,14 @@ const Connexion = () => {
                     <h1 className='text-3xl text-left text-bleu-9 font-bold'>Bienvenue, Admin</h1>
                     <div className='w-full flex flex-col items-start justify-start gap-4'>
                         <div className="w-full flex flex-col items-start justify-start gap-2.5">
-                            <label htmlFor="email" className="text-xl text-bleu-8 font-medium">Email</label>
+                            <label htmlFor="email-telephone" className="text-xl text-bleu-8 font-medium">Email ou téléphone</label>
                             <input
-                                onChange={(e) => setEmail(e.target.value)}
-                                value={email}
-                                id="email" 
-                                type="email"
+                                onChange={(e) => setIdentifiant(e.target.value)}
+                                value={identifiant}
+                                id="email-telephone" 
+                                type="text"
                                 required 
-                                className="border border-bleu-7 rounded-xl w-full py-2.5 px-2.5 text-base text-gris-1 outline-0 focus:border-bleu-9 focus:ring-bleu-9 placeholder:text-bleu-7" placeholder="example@mail.com" 
+                                className="border border-bleu-7 rounded-xl w-full py-2.5 px-2.5 text-base text-gris-1 outline-0 focus:border-bleu-9 focus:ring-bleu-9 placeholder:text-bleu-7" placeholder="ex: example@mail.com ou 12345678" 
                             />
                         </div>
                         <div className="w-full flex flex-col items-start justify-start gap-2.5">
@@ -39,7 +39,7 @@ const Connexion = () => {
                                 id="mdp" 
                                 type="password" 
                                 required
-                                className="border border-bleu-7 rounded-xl w-full py-2.5 px-2.5 text-base text-gris-1 outline-0 focus:border-bleu-9 focus:ring-bleu-9 placeholder:text-bleu-7" placeholder="12345678@Abc" 
+                                className="border border-bleu-7 rounded-xl w-full py-2.5 px-2.5 text-base text-gris-1 outline-0 focus:border-bleu-9 focus:ring-bleu-9 placeholder:text-bleu-7" placeholder="ex: 12345678@Abc" 
                             />
                         </div>
                         <button

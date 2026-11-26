@@ -7,7 +7,7 @@ export interface Utilisateur {
 }
 
 export interface LoginData {
-    email: string
+    identifiant: string
     password: string
 }
 
