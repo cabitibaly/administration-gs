@@ -26,10 +26,10 @@ const VigileLigne = ({vigile, setVigileId, setIsOpen, isOpen, ref}: VigileLigneP
                 {vigile.nom + " " + vigile.prenom}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {vigile.telephone}
+                {vigile.telephone ? vigile.telephone : "N/A"}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {vigile.email}
+                {vigile.email ? vigile.email : "N/A"}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
                 {vigile.posteDeGarde}

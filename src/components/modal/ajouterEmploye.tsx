@@ -38,12 +38,17 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
                 return
             }
 
-            if (!isValidPhone(employe.telephone)) {
+            if (!employe.email && !employe.telephone) {
+                toast.info("Le mail ou le téléphone est requis", TOAST_OPTIONS_INFO)
+                return
+            }
+
+            if (employe.telephone && !isValidPhone(employe.telephone)) {
                 toast.info("Veuillez saisir un numéro de téléphone valide", TOAST_OPTIONS_INFO)
                 return
             }
 
-            if (!isValidEmail(employe.email)) {
+            if (employe.email && !isValidEmail(employe.email)) {
                 toast.info("Veuillez saisir une adresse email valide", TOAST_OPTIONS_INFO)
                 return
             }
@@ -119,6 +124,7 @@ const AjouterEmploye = ({isOpen, setIsOpen, refetch, employeId}: Props) => {
                                         <ManualForm  
                                             employe={employe}
                                             dispatch={dispatch}
+                                            isUpdating={employeId != null}
                                             // employeId={employeId}
                                         />
                                 }

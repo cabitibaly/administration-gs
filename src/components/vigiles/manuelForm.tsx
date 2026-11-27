@@ -118,11 +118,11 @@ const ManualForm = ({vigile, dispatch, isUpdating}: ManualFormProps) => {
                     <label htmlFor="telephone" className="text-lg text-gris-8 font-medium">Téléphone</label>
                     <input 
                         id="telephone"
+                        disabled={isUpdating}
                         value={vigile.telephone}
                         onChange={(e) => dispatch({ type: "SET_TELEPHONE", payload: e.target.value })}
-                        type="text" 
-                        required
-                        className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" 
+                        type="text"                         
+                        className={`border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10 ${isUpdating ? "cursor-not-allowed" : ""}`}
                         placeholder="Saisir le téléphone..." 
                     />
                 </div>
@@ -133,8 +133,7 @@ const ManualForm = ({vigile, dispatch, isUpdating}: ManualFormProps) => {
                         disabled={isUpdating}                        
                         value={vigile.email}
                         onChange={(e) => dispatch({ type: "SET_EMAIL", payload: e.target.value })}
-                        type="email"
-                        required 
+                        type="email"                        
                         className={`border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10 ${isUpdating ? "cursor-not-allowed" : ""}`}
                         placeholder="Saisir le mail..." 
                     />

@@ -8,9 +8,10 @@ interface ManualFormProps {
     employe: EmployeRequest;
     dispatch: React.Dispatch<EmployeRequestAction>;    
     employeId?: number | null;
+    isUpdating: boolean
 }
 
-const ManualForm = ({employe, dispatch}: ManualFormProps) => {
+const ManualForm = ({employe, dispatch, isUpdating}: ManualFormProps) => {
     const [selected, setSelected] = useState<string>("");
     const [recherche, setRecherche] = useState<string>("");
     const debouncedSearch = useDebounce(recherche, 500)
@@ -82,22 +83,24 @@ const ManualForm = ({employe, dispatch}: ManualFormProps) => {
                     <label htmlFor="telephone" className="text-lg text-gris-8 font-medium">Téléphone</label>
                     <input 
                         id="telephone"
+                        disabled={isUpdating}
                         value={employe.telephone}
                         onChange={(e) => dispatch({ type: "SET_TELEPHONE", payload: e.target.value })}
-                        type="text" 
-                        required
-                        className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Saisir le téléphone..." 
+                        type="text"                         
+                        className={`border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10 ${isUpdating ? "cursor-not-allowed" : ""}`}
+                        placeholder="Saisir le téléphone..." 
                     />
                 </div>
                 <div className="w-1/2 flex flex-col items-start justify-start gap-2">
                     <label htmlFor="email" className="text-lg text-gris-8 font-medium">Email</label>
                     <input 
                         id="email"
+                        disabled={isUpdating}
                         value={employe.email}
                         onChange={(e) => dispatch({ type: "SET_EMAIL", payload: e.target.value })}
                         type="email"
-                        required 
-                        className="border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10" placeholder="Saisir le mail..." 
+                        className={`border border-transparent bg-gris-11/20 rounded-xl w-full py-3 px-2 text-base text-gris-1 outline-0 focus:border-gris-8 focus:ring-gris-8 placeholder:text-gris-10 ${isUpdating ? "cursor-not-allowed" : ""}`}
+                        placeholder="Saisir le mail..." 
                     />
                 </div>
             </div>    

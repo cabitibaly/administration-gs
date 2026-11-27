@@ -86,12 +86,17 @@ const AjouterVigile = ({isOpen, setIsOpen, refetch, vigileId}: Props) => {
                 return
             }
 
-            if (!isValidPhone(vigile.telephone)) {
+            if (!vigile.email && !vigile.telephone) {
+                toast.info("Le mail ou le téléphone est requis", TOAST_OPTIONS_INFO)
+                return
+            }
+
+            if (vigile.telephone && !isValidPhone(vigile.telephone)) {
                 toast.info("Veuillez saisir un numéro de téléphone valide", TOAST_OPTIONS_INFO)
                 return
             }
             
-            if (!isValidEmail(vigile.email)) {
+            if (vigile.email && !isValidEmail(vigile.email)) {
                 toast.info("Veuillez saisir une adresse email valide", TOAST_OPTIONS_INFO)
                 return
             }
@@ -167,7 +172,7 @@ const AjouterVigile = ({isOpen, setIsOpen, refetch, vigileId}: Props) => {
                                     <ManualForm 
                                         dispatch={dispatch}
                                         vigile={vigile} 
-                                        isUpdating={vigileId !== null}                                       
+                                        isUpdating={vigileId !== null}                                      
                                     />
                                 }
                                 {

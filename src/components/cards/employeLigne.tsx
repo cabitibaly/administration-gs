@@ -24,10 +24,10 @@ const EmployeLigne = ({employe, setEmployeId, setIsOpen, isOpen, ref}: EmployeLi
                 {employe.nom + " " + employe.prenom}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {employe.telephone}
+                {employe.telephone ? employe.telephone : "N/A"}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
-                {employe.email}
+                {employe.email ? employe.email : "N/A"}
             </td>
             <td className="px-6 py-4 text-gris-1 font-normal">
                 {employe.matricule}
